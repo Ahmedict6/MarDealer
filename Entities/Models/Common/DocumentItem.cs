@@ -12,12 +12,12 @@ namespace Entities.Models.Common
     public class DocumentItem
     {
         [Key]
-        public Guid ID { get; set; }
+        public int Id { get; set; }
 
         public string? DocuemntName { get; set; }
         public string? DocumentUrl { get; set; }
         public DocumentItemType? DocumentType { get; set; }
-        public int? RefreneceNumber { get; set; }
+        public int? RefereneceNumber { get; set; }
         public DateTime DocuementCreatedDate { get; set; }
         public DateTime DocumentModifiedDate { get; set; }
 
@@ -26,7 +26,7 @@ namespace Entities.Models.Common
         public enum DocumentItemType
         {
             ProfileImage,
-            ProdectImage,
+            ProductImage,
 
 
         }
