@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "QXU4co+d64pfO1X8bpx1abH5T6UUHNQVVVAFwzL7XVc=",
+  "Source": "MarDealer",
+  "BasePath": "_content/MarDealer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MarDealer\\wwwroot",
+      "Source": "MarDealer",
+      "ContentRoot": "E:\\MarDealer\\MarDealer\\wwwroot\\",
+      "BasePath": "_content/MarDealer",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "E:\\MarDealer\\MarDealer\\wwwroot\\Document\\1.jpeg",
+      "SourceId": "MarDealer",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\MarDealer\\MarDealer\\wwwroot\\",
+      "BasePath": "_content/MarDealer",
+      "RelativePath": "Document/1.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Document\\1.jpeg"
+    }
+  ]
+}
