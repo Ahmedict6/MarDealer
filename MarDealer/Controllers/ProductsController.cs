@@ -41,7 +41,8 @@ namespace MarDealer.Controllers
             foreach (var Product in Products)
             {
 
-
+             //   var xxx = _context.DocumentItems;
+              //  var xxx1 = _context.DocumentItems.Where(q => q.RefereneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList();
                 ProductViewModel pvm = new ProductViewModel
                 {
                 Id = Product.Id,
@@ -64,7 +65,7 @@ namespace MarDealer.Controllers
                 ProductCreatedDate = Product.ProductCreatedDate,
                 ProductModifiedDate = Product.ProductModifiedDate,
 
-                ProductImages = _context.DocumentItems.Where(q => q.RefreneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProdectImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
+                ProductImages = _context.DocumentItems.Where(q => q.RefereneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
             };
 
                 productVms.Add(pvm);
@@ -73,12 +74,7 @@ namespace MarDealer.Controllers
             response.Data = productVms;
             return response;// await _context.Products.Include(q => q.SubCategory).Include(q => q.ProductInventory).ToListAsync();// .Join(_context.DocumentItems, e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage }).ToListAsync();
         }
-        [HttpGet("GetprodectWithDocument/{id}")]
-        public async Task<IEnumerable<dynamic>> GetprodectWithDocument(int id)
-        {
-
-            return await _context.Products.Join(_context.DocumentItems, e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) =>  new { Product.Id,  Productinfo = Product, ProductImage }).ToListAsync();
-        }
+      
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
