@@ -1,0 +1,34 @@
+﻿using Entities.Models.Product_Management;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Models.Common
+{
+    public class DocumentItem
+    {
+        [Key]
+        public Guid ID { get; set; }
+
+        public string? DocuemntName { get; set; }
+        public string? DocumentUrl { get; set; }
+        public DocumentItemType? DocumentType { get; set; }
+        public int? RefreneceNumber { get; set; }
+        public DateTime DocuementCreatedDate { get; set; }
+        public DateTime DocumentModifiedDate { get; set; }
+
+
+
+        public enum DocumentItemType
+        {
+            ProfileImage,
+            ProdectImage,
+
+
+        }
+    }
+}
