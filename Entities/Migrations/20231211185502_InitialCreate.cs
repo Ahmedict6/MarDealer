@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class firstinit : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,23 @@ namespace Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdminUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocumentItems",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DocuemntName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DocumentUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DocumentType = table.Column<int>(type: "int", nullable: true),
+                    RefreneceNumber = table.Column<int>(type: "int", nullable: true),
+                    DocuementCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DocumentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentItems", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,6 +395,9 @@ namespace Entities.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AdminUsers");
+
+            migrationBuilder.DropTable(
+                name: "DocumentItems");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");

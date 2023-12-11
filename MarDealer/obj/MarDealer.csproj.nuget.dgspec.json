@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\MarDealer\\MarDealer\\MarDealer.csproj": {}
+    "E:\\MarDealer\\MarDealer2\\MarDealer\\MarDealer.csproj": {}
   },
   "projects": {
-    "E:\\MarDealer\\Business\\Business.csproj": {
+    "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MarDealer\\Business\\Business.csproj",
+        "projectUniqueName": "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj",
         "projectName": "Business",
-        "projectPath": "E:\\MarDealer\\Business\\Business.csproj",
+        "projectPath": "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj",
         "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "E:\\MarDealer\\Business\\obj\\",
+        "outputPath": "E:\\MarDealer\\MarDealer2\\Business\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -62,14 +62,14 @@
         }
       }
     },
-    "E:\\MarDealer\\Entities\\Entities.csproj": {
+    "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MarDealer\\Entities\\Entities.csproj",
+        "projectUniqueName": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "E:\\MarDealer\\Entities\\Entities.csproj",
+        "projectPath": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "E:\\MarDealer\\Entities\\obj\\",
+        "outputPath": "E:\\MarDealer\\MarDealer2\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -142,14 +142,14 @@
         }
       }
     },
-    "E:\\MarDealer\\MarDealer\\MarDealer.csproj": {
+    "E:\\MarDealer\\MarDealer2\\MarDealer\\MarDealer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MarDealer\\MarDealer\\MarDealer.csproj",
+        "projectUniqueName": "E:\\MarDealer\\MarDealer2\\MarDealer\\MarDealer.csproj",
         "projectName": "MarDealer",
-        "projectPath": "E:\\MarDealer\\MarDealer\\MarDealer.csproj",
+        "projectPath": "E:\\MarDealer\\MarDealer2\\MarDealer\\MarDealer.csproj",
         "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "E:\\MarDealer\\MarDealer\\obj\\",
+        "outputPath": "E:\\MarDealer\\MarDealer2\\MarDealer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -169,11 +169,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\MarDealer\\Business\\Business.csproj": {
-                "projectPath": "E:\\MarDealer\\Business\\Business.csproj"
+              "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj": {
+                "projectPath": "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj"
               },
-              "E:\\MarDealer\\Entities\\Entities.csproj": {
-                "projectPath": "E:\\MarDealer\\Entities\\Entities.csproj"
+              "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj": {
+                "projectPath": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj"
               }
             }
           }

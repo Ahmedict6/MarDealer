@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\MarDealer\\Business\\Business.csproj",
+      "projectUniqueName": "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj",
       "projectName": "Business",
-      "projectPath": "E:\\MarDealer\\Business\\Business.csproj",
+      "projectPath": "E:\\MarDealer\\MarDealer2\\Business\\Business.csproj",
       "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-      "outputPath": "E:\\MarDealer\\Business\\obj\\",
+      "outputPath": "E:\\MarDealer\\MarDealer2\\Business\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

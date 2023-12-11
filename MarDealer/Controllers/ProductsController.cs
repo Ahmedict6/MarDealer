@@ -1,9 +1,10 @@
-﻿using Business;
+﻿using Business.Coomon;
 using Entities;
 using Entities.Models.Common;
 using Entities.Models.Product_Management;
 using MarDealer.NewFolder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -127,5 +128,71 @@ namespace MarDealer.Controllers
             return Ok();
 
         }
+
+
+        [HttpPost("/Getprodect")]
+        public Task<ApiResponse<List<ProductViewModel>>> Getprodect(Descriptor descriptor)
+        {
+
+
+            ApiResponse<List<ProductViewModel>> response = new ApiResponse<List<ProductViewModel>>();
+
+
+
+            IQueryable<Entities.Models.Product_Management.Product> query = _context.Products;
+
+
+            if (descriptor.pagination.pageIndex != null)
+            {
+                query = query.Skip(((int)descriptor.pagination.pageIndex - 1) * (int)descriptor.pagination.pageSize);
+            }
+
+            if (descriptor.pagination.pageSize != null)
+            {
+                query = query.Take((int)descriptor.pagination.pageSize);
+            }
+
+
+            var Products = query.Include(q => q.SubCategory).Include(q => q.ProductInventory).ToList();
+            var productVms = new List<ProductViewModel>();
+
+            foreach (var Product in Products)
+            {
+
+
+                ProductViewModel pvm = new ProductViewModel
+                {
+                    Id = Product.Id,
+
+                    ProductName = Product.ProductName,
+                    ProductDescritpion = Product.ProductDescritpion,
+                    ProductPrice = Product.ProductPrice,
+                    ProductCategoryNo = Product.ProductCategoryNo,
+                    ProductCategory = Product.ProductCategory,
+                    SubCategoryNo = Product.SubCategoryNo,
+                    SubCategory = Product.SubCategory,
+                    SubOfSubCategoryNo = Product.SubOfSubCategoryNo,
+                    SubOfSubCategory = Product.SubOfSubCategory,
+                    ProductInventory = Product.ProductInventory,
+                    ProductInventoryNo = Product.ProductInventoryNo,
+                    ProductDiscountNo = Product.ProductDiscountNo,
+                    ProductDiscount = Product.ProductDiscount,
+                    UserNo = Product.UserNo,
+                    ProductUnit = Product.ProductUnit,
+                    ProductCreatedDate = Product.ProductCreatedDate,
+                    ProductModifiedDate = Product.ProductModifiedDate,
+
+                    ProductImages = _context.DocumentItems.Where(q => q.RefreneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProdectImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
+                };
+
+                productVms.Add(pvm);
+
+            }
+            response.Data = productVms;
+            return Task.FromResult(response);// await _context.Products.Include(q => q.SubCategory).Include(q => q.ProductInventory).ToListAsync();// .Join(_context.DocumentItems, e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage }).ToListAsync();
+        }
+
+
+
     }
 }

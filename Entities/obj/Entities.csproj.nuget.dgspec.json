@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\MarDealer\\Entities\\Entities.csproj": {}
+    "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj": {}
   },
   "projects": {
-    "E:\\MarDealer\\Entities\\Entities.csproj": {
+    "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MarDealer\\Entities\\Entities.csproj",
+        "projectUniqueName": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "E:\\MarDealer\\Entities\\Entities.csproj",
+        "projectPath": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "E:\\MarDealer\\Entities\\obj\\",
+        "outputPath": "E:\\MarDealer\\MarDealer2\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

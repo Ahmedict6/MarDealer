@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    [Migration("20231210133755_Initial3")]
-    partial class Initial3
+    [Migration("20231211185502_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Common.DocumentItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DocuementCreatedDate")
                         .HasColumnType("datetime2");
@@ -50,9 +48,7 @@ namespace Entities.Migrations
                     b.Property<int?>("RefreneceNumber")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("RefreneceNumber");
+                    b.HasKey("ID");
 
                     b.ToTable("DocumentItems");
                 });
@@ -519,13 +515,6 @@ namespace Entities.Migrations
                     b.ToTable("UserType");
                 });
 
-            modelBuilder.Entity("Entities.Models.Common.DocumentItem", b =>
-                {
-                    b.HasOne("Entities.Models.Product_Management.Product", null)
-                        .WithMany("DocumentItem")
-                        .HasForeignKey("RefreneceNumber");
-                });
-
             modelBuilder.Entity("Entities.Models.Product_Management.Product", b =>
                 {
                     b.HasOne("Entities.Models.Product_Management.ProductCategory", "ProductCategory")
@@ -616,11 +605,6 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("UserType");
-                });
-
-            modelBuilder.Entity("Entities.Models.Product_Management.Product", b =>
-                {
-                    b.Navigation("DocumentItem");
                 });
 #pragma warning restore 612, 618
         }

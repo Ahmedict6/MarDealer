@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TWMjjgOCPNFK9z+RVytS6vpO6xg2V233c0aqgAeGVhiamqinfgUH8UArpusw0FYJfL9B1TI6MGzFZqiflLTEww==",
+  "dgSpecHash": "3l3DVfbsKQnl4S0s+UqVezPJ6KopqSjYOUpcz0NRFb86nYqsc0qbcr5SPX+n6jJ4DTmPO2kcIOQ7/Mg7yW29aw==",
   "success": true,
-  "projectFilePath": "E:\\MarDealer\\Entities\\Entities.csproj",
+  "projectFilePath": "E:\\MarDealer\\MarDealer2\\Entities\\Entities.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pc\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

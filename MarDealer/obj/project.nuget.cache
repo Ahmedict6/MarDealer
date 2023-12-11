@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "34Q7QivHEJivhoPmnNdgAm0WWJBGpA3+zO8S+LmTZ7loatH/YnlZJj+kRLtE1rhx132CgisdsQuSFA+sFLmHfA==",
+  "dgSpecHash": "fj35P6A4WnVJKQBPHa8fdmRDqnbQvIVWgEOIYaqdMlgt+RZ64GcCkVnam/6zNYNx6nVFC8Ey8xkGzGLIaSHsnA==",
   "success": true,
-  "projectFilePath": "E:\\MarDealer\\MarDealer\\MarDealer.csproj",
+  "projectFilePath": "E:\\MarDealer\\MarDealer2\\MarDealer\\MarDealer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pc\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

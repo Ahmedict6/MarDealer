@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QXU4co+d64pfO1X8bpx1abH5T6UUHNQVVVAFwzL7XVc=",
+  "Hash": "Hn0kU+vpIlfCZCD8tubG/0KBp0Pv6DYnLMMjZZ8+p10=",
   "Source": "MarDealer",
   "BasePath": "_content/MarDealer",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "MarDealer\\wwwroot",
       "Source": "MarDealer",
-      "ContentRoot": "E:\\MarDealer\\MarDealer\\wwwroot\\",
+      "ContentRoot": "E:\\MarDealer\\MarDealer2\\MarDealer\\wwwroot\\",
       "BasePath": "_content/MarDealer",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\MarDealer\\MarDealer\\wwwroot\\Document\\1.jpeg",
+      "Identity": "E:\\MarDealer\\MarDealer2\\MarDealer\\wwwroot\\Document\\1.jpeg",
       "SourceId": "MarDealer",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\MarDealer\\MarDealer\\wwwroot\\",
+      "ContentRoot": "E:\\MarDealer\\MarDealer2\\MarDealer\\wwwroot\\",
       "BasePath": "_content/MarDealer",
       "RelativePath": "Document/1.jpeg",
       "AssetKind": "All",

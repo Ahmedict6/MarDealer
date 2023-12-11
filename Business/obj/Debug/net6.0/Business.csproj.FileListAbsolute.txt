@@ -21,3 +21,15 @@ E:\MarDealer\Business\obj\Debug\net6.0\Business.dll
 E:\MarDealer\Business\obj\Debug\net6.0\refint\Business.dll
 E:\MarDealer\Business\obj\Debug\net6.0\Business.pdb
 E:\MarDealer\Business\obj\Debug\net6.0\ref\Business.dll
+E:\MarDealer\MarDealer2\Business\bin\Debug\net6.0\Business.deps.json
+E:\MarDealer\MarDealer2\Business\bin\Debug\net6.0\Business.dll
+E:\MarDealer\MarDealer2\Business\bin\Debug\net6.0\Business.pdb
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.GeneratedMSBuildEditorConfig.editorconfig
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.AssemblyInfoInputs.cache
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.AssemblyInfo.cs
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.csproj.CoreCompileInputs.cache
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.sourcelink.json
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.dll
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\refint\Business.dll
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\Business.pdb
+E:\MarDealer\MarDealer2\Business\obj\Debug\net6.0\ref\Business.dll
