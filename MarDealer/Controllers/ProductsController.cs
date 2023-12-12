@@ -178,7 +178,7 @@ namespace MarDealer.Controllers
                     ProductCreatedDate = Product.ProductCreatedDate,
                     ProductModifiedDate = Product.ProductModifiedDate,
 
-                    ProductImages = _context.DocumentItems.Where(q => q.RefreneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProdectImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
+                    ProductImages = _context.DocumentItems.Where(q => q.RefereneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
                 };
 
                 productVms.Add(pvm);
