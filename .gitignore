@@ -2,9 +2,22 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Business/Business.csproj
 /Business/[Bb]in/
 /Business/[Oo]bj/
+
+/MarDealer/[Bb]in/
+/MarDealer/[Oo]bj/
+
+
+/Repository/[Bb]in/
+/Repository/[Oo]bj/
+
+/Entities/[Bb]in/
+/Entities/[Oo]bj/
+
+.vs/
+.vs
+
 
 *.swp
 *.*~
