@@ -221,7 +221,12 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryNo")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryNo");
 
                     b.ToTable("SubCategory");
                 });
@@ -246,7 +251,12 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SubCategoryNo")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubCategoryNo");
 
                     b.ToTable("SubOfSubCategory");
                 });
@@ -556,6 +566,28 @@ namespace Entities.Migrations
                     b.Navigation("SubCategory");
 
                     b.Navigation("SubOfSubCategory");
+                });
+
+            modelBuilder.Entity("Entities.Models.Product_Management.SubCategory", b =>
+                {
+                    b.HasOne("Entities.Models.Product_Management.ProductCategory", "ProductCategory")
+                        .WithMany()
+                        .HasForeignKey("CategoryNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductCategory");
+                });
+
+            modelBuilder.Entity("Entities.Models.Product_Management.SubOfSubCategory", b =>
+                {
+                    b.HasOne("Entities.Models.Product_Management.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Entities.Models.Shopping_Management.Order", b =>

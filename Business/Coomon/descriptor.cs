@@ -10,9 +10,9 @@ namespace Business.Coomon
 {
     public class Descriptor
     {
-        public OrderBy orderBy { get; set; }
-        public Pagination pagination { get; set; }
-        public String[] Filter { get; set; }
+        public OrderBy? orderBy { get; set; }
+        public Pagination? pagination { get; set; }
+        public Filter[]? filter { get; set; }
 
 
 
@@ -33,7 +33,15 @@ namespace Business.Coomon
         public int pageIndex { get; set; }
 
     }
+ public class Filter
+    {
 
+        public String ColName { get; set; }
+        public String Opration { get; set; }  // in , Equal , like
+        public String ColValue { get; set; }
+
+
+    }
 
     public static class DescriptorProccer {
 
@@ -43,30 +51,60 @@ namespace Business.Coomon
 
            
 
-            if (descriptor.pagination.pageIndex != null)
+            if (descriptor.pagination?.pageIndex != null)
             {
                 query = query.Skip(((int)descriptor.pagination.pageIndex - 1) * (int)descriptor.pagination.pageSize);
              
             }
 
-            if (descriptor.pagination.pageSize != null)
+            if (descriptor.pagination?.pageSize != null)
             {
                 query = query.Take((int)descriptor.pagination.pageSize);
             }
 
 
 
-            if (descriptor.orderBy.orderName != null && descriptor.orderBy.OrderType == "DESC")
+            if (descriptor.orderBy?.orderName != null && descriptor.orderBy?.OrderType != null)
             {
-
-
-                //var param = "Address";
-                //var pi = typeof(T).GetProperty(param);
-                //var orderByAddress = query.OrderBy(x => pi.GetValue(x, null));
-
-                query.OrderBy(descriptor.orderBy.orderName + " " + descriptor.orderBy.OrderType);
+                if(descriptor.orderBy.OrderType =="DESC" || descriptor.orderBy.OrderType == "ASC" )
+                    query =  query.OrderBy(descriptor.orderBy.orderName + " " + descriptor.orderBy.OrderType);
                
             }
+
+
+
+            foreach (var item in descriptor.filter)
+            {
+
+                switch (item.Opration.ToLower())
+                {
+                    case "in":
+                        query = query.Where(item.ColName + " in ( " + item.ColValue + ")");
+
+                    break;
+
+                        
+                    case "equal":
+
+                        query = query.Where($"{item.ColName} = \"{item.ColValue}\" " );
+
+                        
+                        break;
+
+                    case "contains":
+                        query = query.Where($"{item.ColName}.Contains(\"{item.ColValue}\")");
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                
+
+            }
+
+            
           
 
             return query;

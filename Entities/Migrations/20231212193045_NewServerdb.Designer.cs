@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    [Migration("20231211184824_drop document table")]
-    partial class dropdocumenttable
+    [Migration("20231212193045_NewServerdb")]
+    partial class NewServerdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,37 @@ namespace Entities.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Entities.Models.Common.DocumentItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DocuementCreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocuemntName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DocumentModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DocumentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RefereneceNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentItems");
+                });
 
             modelBuilder.Entity("Entities.Models.Product_Management.Product", b =>
                 {
@@ -192,7 +223,12 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryNo")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryNo");
 
                     b.ToTable("SubCategory");
                 });
@@ -217,7 +253,12 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SubCategoryNo")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubCategoryNo");
 
                     b.ToTable("SubOfSubCategory");
                 });
@@ -527,6 +568,28 @@ namespace Entities.Migrations
                     b.Navigation("SubCategory");
 
                     b.Navigation("SubOfSubCategory");
+                });
+
+            modelBuilder.Entity("Entities.Models.Product_Management.SubCategory", b =>
+                {
+                    b.HasOne("Entities.Models.Product_Management.ProductCategory", "ProductCategory")
+                        .WithMany()
+                        .HasForeignKey("CategoryNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductCategory");
+                });
+
+            modelBuilder.Entity("Entities.Models.Product_Management.SubOfSubCategory", b =>
+                {
+                    b.HasOne("Entities.Models.Product_Management.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Entities.Models.Shopping_Management.Order", b =>
