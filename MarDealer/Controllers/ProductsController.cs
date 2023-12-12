@@ -126,7 +126,7 @@ namespace MarDealer.Controllers
         }
 
 
-        [HttpPost("/Getprodect")]
+        [HttpPost("/GetProducts")]
         public Task<ApiResponse<List<ProductViewModel>>> Getprodect(Descriptor descriptor)
         {
 
