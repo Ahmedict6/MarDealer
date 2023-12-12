@@ -136,17 +136,17 @@ namespace MarDealer.Controllers
 
 
             IQueryable<Entities.Models.Product_Management.Product> query = _context.Products;
+            DescriptorProccer.QuryExcuter(descriptor, query);
 
+            //if (descriptor.pagination.pageIndex != null)
+            //{
+            //    query = query.Skip(((int)descriptor.pagination.pageIndex - 1) * (int)descriptor.pagination.pageSize);
+            //}
 
-            if (descriptor.pagination.pageIndex != null)
-            {
-                query = query.Skip(((int)descriptor.pagination.pageIndex - 1) * (int)descriptor.pagination.pageSize);
-            }
-
-            if (descriptor.pagination.pageSize != null)
-            {
-                query = query.Take((int)descriptor.pagination.pageSize);
-            }
+            //if (descriptor.pagination.pageSize != null)
+            //{
+            //    query = query.Take((int)descriptor.pagination.pageSize);
+            //}
 
 
             var Products = query.Include(q => q.SubCategory).Include(q => q.ProductInventory).ToList();
@@ -178,7 +178,7 @@ namespace MarDealer.Controllers
                     ProductCreatedDate = Product.ProductCreatedDate,
                     ProductModifiedDate = Product.ProductModifiedDate,
 
-                    ProductImages = _context.DocumentItems.Where(q => q.RefreneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProdectImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
+                    ProductImages = _context.DocumentItems.Where(q => q.RefereneceNumber == Product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { Product.Id, Productinfo = Product, ProductImage 
                 };
 
                 productVms.Add(pvm);
