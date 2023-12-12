@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,18 @@ namespace Business.Coomon
                     case "contains":
                         query = query.Where($"{item.ColName}.Contains(\"{item.ColValue}\")");
 
+                        break;
+
+                    case "betweenNumeric":
+                        String[] bteewns = item.ColValue.Split(',');
+                        query = query.Where($"{item.ColName} >= @0.start && {item.ColName} <= @0.end", new { start = int.Parse(bteewns[0]), end= int.Parse(bteewns[1]) }); ;
+                        break;
+
+
+
+                    case "betweenDate":
+                        String[] bteewnsDate = item.ColValue.Split(',');
+                        query = query.Where($"{item.ColName} >= @0.start && {item.ColName} <= @0.end", new { start = DateTime.Parse(bteewnsDate[0]), end = DateTime.Parse(bteewnsDate[1]) }); ;
                         break;
 
                     default:
