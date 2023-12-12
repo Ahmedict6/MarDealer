@@ -35,8 +35,8 @@ namespace MarDealer.Controllers
 
 
 
-            var Products =  _context.Products.Include(q => q.SubCategory).Include(q => q.ProductInventory).ToList();
-                var productVms = new List<ProductViewModel>();
+            var Products =  _context.Products.Include(q => q.ProductInventory).Include(q => q.ProductCategory).Include(q => q.SubCategory).Include(q => q.SubOfSubCategory).ToList();
+            var productVms = new List<ProductViewModel>();
 
             foreach (var Product in Products)
             {
