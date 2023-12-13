@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using Entities.Models.Product_Management;
-using Business.Interfaces;
 using Repository;
 using Entities;
+using Business.Interfaces.Common;
+using Business.Interfaces.Product;
 
-namespace Business.Implementation.Common
+namespace Business.Implementation.Product
 {
     public class ProductBusiness : IProductBusiness
     {
@@ -16,8 +17,8 @@ namespace Business.Implementation.Common
         public ProductBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
         {
 
-            this.productRepo = _productRepo;
-            this.unitOfWork = _unitOfWork;
+            productRepo = _productRepo;
+            unitOfWork = _unitOfWork;
         }
 
         public void Delete(object id)
@@ -51,6 +52,6 @@ namespace Business.Implementation.Common
             productRepo.Update(entity);
             unitOfWork.Commit();
         }
-     
+
     }
 }
