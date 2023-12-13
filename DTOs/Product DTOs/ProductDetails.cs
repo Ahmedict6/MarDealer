@@ -1,17 +1,21 @@
 ﻿using Entities.Models.Common;
 using Entities.Models.Product_Management;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MarDealer.NewFolder
+namespace DTOs.Product_DTOs
 {
-    public class ProductViewModel
+    public record ProductDetails
     {
         public int Id { get; set; }
         public string? ProductName { get; set; }
         public string? ProductDescritpion { get; set; }
         public string? ProductPrice { get; set; }
         public int ProductCategoryNo { get; set; }
-        [ForeignKey("ProductCategoryNo")]
         public virtual ProductCategory ProductCategory { get; set; }
         public int SubCategoryNo { get; set; }
         [ForeignKey("SubCategoryNo")]
@@ -25,12 +29,11 @@ namespace MarDealer.NewFolder
         public int ProductDiscountNo { get; set; }
         [ForeignKey("ProductDiscountNo")]
         public virtual ProductDiscount ProductDiscount { get; set; }
-        public  List<DocumentItem> ProductImages { get; set; }
+        public List<DocumentItem> ProductImages { get; set; }
 
         public int UserNo { get; set; }
         public string? ProductUnit { get; set; }
         public DateTime ProductCreatedDate { get; set; }
         public DateTime ProductModifiedDate { get; set; }
-
     }
 }
