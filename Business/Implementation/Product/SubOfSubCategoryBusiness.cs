@@ -9,12 +9,12 @@ using Business.Interfaces.Product;
 
 namespace Business.Implementation.Product
 {
-    public class ProductBusiness : IProductBusiness
+    public class SubOfSubCategoryBusiness : ISubOfSubCategoryBusiness
     {
         private readonly IGenericRepository<Product> productRepo;
         private readonly IUnitOfWork unitOfWork;
 
-        public ProductBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
+        public SubOfSubCategoryBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
         {
 
             this.productRepo = _productRepo;

@@ -4,7 +4,7 @@ using Repository.Interfaces;
 
 namespace Business.Interfaces.Common
 {
-    public interface IProductBusiness : IGenericRepository<Product>
+    public interface IDocumentItemBusiness : IGenericRepository<Product>
     {
 
     }

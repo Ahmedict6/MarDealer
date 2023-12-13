@@ -9,7 +9,7 @@ using Business.Interfaces.Product;
 
 namespace Business.Implementation.Product
 {
-    public class ProductBusiness : IProductBusiness
+    public class ProductInventoryBusiness : IProductInventoryBusiness
     {
         private readonly IGenericRepository<Product> productRepo;
         private readonly IUnitOfWork unitOfWork;
