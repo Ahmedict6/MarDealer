@@ -15,8 +15,6 @@ namespace DTOs.Product_DTOs
         public string? ProductName { get; set; }
         public string? ProductDescritpion { get; set; }
         public string? ProductPrice { get; set; }
-       
-
         public int UserNo { get; set; }
         public string? UserName { get; set; }
         public string? UserLogUrl { get; set; }

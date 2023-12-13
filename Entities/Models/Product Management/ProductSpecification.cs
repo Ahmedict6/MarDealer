@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models.Product_Management
 {
-    public class ProducSpecification
+    public class ProductSpecification
     {
         [Key]
         public int Id { get; set; }

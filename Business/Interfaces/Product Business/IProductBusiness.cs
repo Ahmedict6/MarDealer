@@ -4,11 +4,12 @@ using Entities.Models;
 using Entities.Models.Product_Management;
 using Repository.Interfaces;
 
-namespace Business.Interfaces.Product
+namespace Business.Interfaces.Product_Business
 {
     public interface IProductBusiness : IGenericRepository<Product>
     {
         List<ProductList> GetAllProducts(Descriptor descriptor);
-       // List<ProductDetails> GetProductDetails(int v);
+        ProductDetails GetProductDetails(int id);
+        // List<ProductDetails> GetProductDetails(int v);
     }
 }

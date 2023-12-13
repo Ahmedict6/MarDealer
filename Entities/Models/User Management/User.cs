@@ -15,11 +15,13 @@ namespace Entities.Models.User_Management
         public int Id { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
+        public string? Mobile { get; set; }
+        public string? FullName { get; set; }
         public int UserTypeNo { get; set; }
         [ForeignKey("UserTypeNo")]
         public virtual UserType UserType { get; set; }
         public int UserInformationNo { get; set; }
-        public int UserPaymentInformationNo { get; set; }
+        public int? UserPaymentInformationNo { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
     }

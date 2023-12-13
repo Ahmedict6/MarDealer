@@ -25,11 +25,13 @@ namespace DTOs.Product_DTOs
         public virtual SubOfSubCategory SubOfSubCategory { get; set; }
         public int ProductInventoryNo { get; set; }
         [ForeignKey("ProductInventoryNo")]
-        public virtual ProductInventory ProductInventory { get; set; }
+        public  ProductInventory ProductInventory { get; set; }
         public int ProductDiscountNo { get; set; }
         [ForeignKey("ProductDiscountNo")]
         public virtual ProductDiscount ProductDiscount { get; set; }
         public List<DocumentItem> ProductImages { get; set; }
+        public List<ProductComment> ProductComments { get; set; }
+        public List<ProductSpecification> ProductSpecifications { get; set; }
 
         public int UserNo { get; set; }
         public string? ProductUnit { get; set; }

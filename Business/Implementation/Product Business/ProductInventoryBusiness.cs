@@ -5,16 +5,16 @@ using Entities.Models.Product_Management;
 using Repository;
 using Entities;
 using Business.Interfaces.Common;
-using Business.Interfaces.Product;
+using Business.Interfaces.Product_Business;
 
-namespace Business.Implementation.Product
+namespace Business.Implementation.Product_Business
 {
-    public class SubOfSubCategoryBusiness : ISubOfSubCategoryBusiness
+    public class ProductInventoryBusiness : IProductInventoryBusiness
     {
-        private readonly IGenericRepository<Product> productRepo;
+        private readonly IGenericRepository<ProductInventory> productRepo;
         private readonly IUnitOfWork unitOfWork;
 
-        public SubOfSubCategoryBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
+        public ProductInventoryBusiness(IGenericRepository<ProductInventory> _productRepo, IUnitOfWork _unitOfWork)
         {
 
             this.productRepo = _productRepo;
@@ -27,27 +27,27 @@ namespace Business.Implementation.Product
             unitOfWork.Commit();
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<ProductInventory> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Product> GetAll(Func<Product, bool> expression)
+        public IEnumerable<ProductInventory> GetAll(Func<ProductInventory, bool> expression)
         {
             throw new NotImplementedException();
         }
 
-        public Product GetById(object id)
+        public ProductInventory GetById(object id)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(Product entity)
+        public void Insert(ProductInventory entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Product entity)
+        public void Update(ProductInventory entity)
         {
             productRepo.Update(entity);
             unitOfWork.Commit();

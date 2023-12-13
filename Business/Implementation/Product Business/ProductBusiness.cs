@@ -6,26 +6,37 @@ using Repository;
 using Entities;
 using DTOs.Product_DTOs;
 using Business.Coomon;
-using Microsoft.EntityFrameworkCore;
-using static Entities.Models.Common.DocumentItem;
+using Business.Interfaces.Product_Business;
+using Entities.Models.Common;
 
-namespace Business.Implementation.Product
+namespace Business.Implementation.Product_Business
 {
     public class ProductBusiness : IProductBusiness
     {
         private readonly IGenericRepository<Product> productRepo;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IGenericRepository<SubCategory> subCategoryRepo;
+        private IGenericRepository<ProductInventory> productInventoryReop;
+        private readonly IGenericRepository<DocumentItem> documentItemRepo;
+        private IGenericRepository<ProductCategory> productCategoryRepo;
+        private IGenericRepository<SubOfSubCategory> subOfSubCategoryRepo;
 
         public ProductBusiness(IUnitOfWork _unitOfWork,
-            //IGenericRepository<Product> _productRepo,
-            //IGenericRepository<Product> _productRepo,
-            //IGenericRepository<Product> _productRepo,
-            //IGenericRepository<Product> _productRepo,
-            IGenericRepository<Product> _productRepo)
+            IGenericRepository<SubCategory> _subCategoryRepo,
+            IGenericRepository<ProductCategory> _productCategoryRepo,
+            IGenericRepository<SubOfSubCategory> _subOfSubCategoryRepo,
+            IGenericRepository<DocumentItem> _documentItemRepo,
+            IGenericRepository<ProductInventory> _productInventoryReop,
+            IGenericRepository<Product> _productRepo, MARDBContext _context)
         {
 
-            productRepo = _productRepo;
             unitOfWork = _unitOfWork;
+            subCategoryRepo = _subCategoryRepo;
+            productCategoryRepo = _productCategoryRepo;
+            subOfSubCategoryRepo = _subOfSubCategoryRepo;
+            productInventoryReop = _productInventoryReop;
+            documentItemRepo = _documentItemRepo;
+            productRepo = _productRepo;
         }
 
         public void Delete(object id)
@@ -49,9 +60,14 @@ namespace Business.Implementation.Product
             throw new NotImplementedException();
         }
 
-        public ProductDetails GetById(object id)
+        public ProductDetails GetProductDetails(int id)
         {
-            var product =  unitOfWork.GetRepository<Product>().GetById(id);
+            var product = unitOfWork.GetRepository<Product>().GetById(id);
+            //var productCategory = unitOfWork.GetRepository<ProductCategory>().GetById(id);
+            //var subCategory = unitOfWork.GetRepository<SubCategory>().GetById(id);
+            //var subOfSubCategory = unitOfWork.GetRepository<SubOfSubCategory>().GetById(id);
+            //var document = unitOfWork.GetRepository<DocumentItem>().GetById(id);
+            //var productInventory = unitOfWork.GetRepository<ProductInventory>().GetById(product.ProductInventoryNo);
             var productDetails = new ProductDetails
             {
                 Id = product.Id,
@@ -74,7 +90,7 @@ namespace Business.Implementation.Product
                 ProductCreatedDate = product.ProductCreatedDate,
                 ProductModifiedDate = product.ProductModifiedDate,
 
-                //ProductImages = unitOfWork.GetRepository()..DocumentItems.Where(q => q.RefereneceNumber == product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { product.Id, Productinfo = Product, ProductImage 
+               // ProductImages = unitOfWork.GetRepository()..DocumentItems.Where(q => q.RefereneceNumber == product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { product.Id, Productinfo = Product, ProductImage 
             };
             return new ProductDetails();
         }
@@ -92,7 +108,7 @@ namespace Business.Implementation.Product
 
         Product IGenericRepository<Product>.GetById(object id)
         {
-            throw new NotImplementedException();
+          return productRepo.GetById(id);
         }
     }
 }

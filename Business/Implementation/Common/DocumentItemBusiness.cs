@@ -5,16 +5,16 @@ using Entities.Models.Product_Management;
 using Repository;
 using Entities;
 using Business.Interfaces.Common;
-using Business.Interfaces.Product;
+using Business.Interfaces.Product_Business;
 
 namespace Business.Implementation.Common
 {
-    public class ProductBusiness : IProductBusiness
+    public class DocumentItemBusiness : IDocumentItemBusiness
     {
         private readonly IGenericRepository<Product> productRepo;
         private readonly IUnitOfWork unitOfWork;
 
-        public ProductBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
+        public DocumentItemBusiness(IGenericRepository<Product> _productRepo, IUnitOfWork _unitOfWork)
         {
 
             this.productRepo = _productRepo;

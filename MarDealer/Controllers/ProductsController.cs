@@ -1,5 +1,6 @@
 ﻿using Business.Coomon;
 using Business.Interfaces;
+using Business.Interfaces.Product_Business;
 using DTOs.Product_DTOs;
 using Entities;
 using Entities.Models.Common;
@@ -31,12 +32,12 @@ namespace MarDealer.Controllers
 
      
         [HttpGet("{id}")]
-        public  IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             if (id < 1)
                 return BadRequest();
 
-            var product = _productBussiness.GetById(1);
+            var product = await Task.Run<ProductDetails>(() =>_productBussiness.GetProductDetails(id));
             if (product == null)
                 return NotFound();
             return Ok(product);
@@ -46,7 +47,7 @@ namespace MarDealer.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Entities.Models.Product_Management.Product product)
         {
-            _context.Add(product);
+            _productBussiness.Insert(product);
             await _context.SaveChangesAsync();
             return Ok();
         }

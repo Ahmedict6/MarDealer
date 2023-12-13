@@ -1,5 +1,12 @@
+using Business.Implementation.Common;
+using Business.Implementation.Product_Business;
+using Business.Interfaces.Common;
+using Business.Interfaces.Product_Business;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Repository;
+using Repository.Interfaces;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +27,15 @@ builder.Services.AddSwaggerGen();
 
 //});
 
+// register business
+builder.Services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProductCategoryBusiness, ProductCategoryBusiness>();
+builder.Services.AddTransient<IProductInventoryBusiness, ProductInventoryBusiness>();
+builder.Services.AddTransient<ISubCategoryBusiness, SubCategoryBusiness>();
+builder.Services.AddTransient<ISubOfSubCategoryBusiness, SubOfSubCategoryBusiness>();
+builder.Services.AddTransient<IDocumentItemBusiness, DocumentItemBusiness>();
+builder.Services.AddTransient<IProductBusiness, ProductBusiness>();
 
 var app = builder.Build();
 
