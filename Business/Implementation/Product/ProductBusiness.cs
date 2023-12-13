@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Entities.Models.Product_Management;
-using Business.Interfaces;
 using Repository;
 using Entities;
 using DTOs.Product_DTOs;
@@ -10,7 +9,7 @@ using Business.Coomon;
 using Microsoft.EntityFrameworkCore;
 using static Entities.Models.Common.DocumentItem;
 
-namespace Business.Implementation.Common
+namespace Business.Implementation.Product
 {
     public class ProductBusiness : IProductBusiness
     {
@@ -25,8 +24,8 @@ namespace Business.Implementation.Common
             IGenericRepository<Product> _productRepo)
         {
 
-            this.productRepo = _productRepo;
-            this.unitOfWork = _unitOfWork;
+            productRepo = _productRepo;
+            unitOfWork = _unitOfWork;
         }
 
         public void Delete(object id)
