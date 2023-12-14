@@ -5,17 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models.Product_Management
+namespace Entities.Models.Common
 {
-    public class ProductComment
+    public class UsersComment
     {
         [Key]
         public int Id { get; set; }
         public string? CommentText { get; set; }
         public int CommentReviewStars { get; set; }
         public int UserNo { get; set; }
-        public DateTime CategoryCreatedDate { get; set; }
-        public DateTime CategoryModifiedDate { get; set; }
+        public CommentType CommentType { get; set; }
+        public int RefranceNumber { get; set; }
+        public DateTime CommentCreatedDate { get; set; }
+        public DateTime CommentModifiedDate { get; set; }
 
     }
+
+    public enum CommentType
+    {
+        CompanyComment,
+        ProductComment,
+
+
+    }
+
 }

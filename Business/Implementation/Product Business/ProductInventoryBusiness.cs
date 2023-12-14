@@ -6,6 +6,7 @@ using Repository;
 using Entities;
 using Business.Interfaces.Common;
 using Business.Interfaces.Product_Business;
+using System.Linq.Expressions;
 
 namespace Business.Implementation.Product_Business
 {
@@ -33,6 +34,11 @@ namespace Business.Implementation.Product_Business
         }
 
         public IEnumerable<ProductInventory> GetAll(Func<ProductInventory, bool> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ProductInventory> GetAllWithChildren(params Expression<Func<ProductInventory, object>>[] includeProperties)
         {
             throw new NotImplementedException();
         }

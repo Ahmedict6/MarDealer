@@ -32,11 +32,12 @@ namespace Entities.Models.Product_Management
         public int ProductDiscountNo { get; set; }
         [ForeignKey("ProductDiscountNo")]
         public virtual ProductDiscount ProductDiscount { get; set; }
-        
+
 
         //public virtual DocumentItem DocumentItem { get; set; }
 
         public int UserNo { get; set; }
+        
         public string? ProductUnit { get; set; }
         public DateTime ProductCreatedDate { get; set; }
         public DateTime ProductModifiedDate { get; set; }

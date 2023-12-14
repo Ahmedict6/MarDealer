@@ -8,6 +8,11 @@ using DTOs.Product_DTOs;
 using Business.Coomon;
 using Business.Interfaces.Product_Business;
 using Entities.Models.Common;
+using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Entities.Models.User_Management;
+using AutoMapper;
+using static DTOs.Common_DTOs.DocumentItem;
 
 namespace Business.Implementation.Product_Business
 {
@@ -20,6 +25,10 @@ namespace Business.Implementation.Product_Business
         private readonly IGenericRepository<DocumentItem> documentItemRepo;
         private IGenericRepository<ProductCategory> productCategoryRepo;
         private IGenericRepository<SubOfSubCategory> subOfSubCategoryRepo;
+        private IGenericRepository<ProductSpecification> productSpecificationRepo;
+        private IGenericRepository<UsersComment> usersCommentrRepo;
+        private IGenericRepository<User> usersRepo;
+        private   IMapper _mapper;
 
         public ProductBusiness(IUnitOfWork _unitOfWork,
             IGenericRepository<SubCategory> _subCategoryRepo,
@@ -27,7 +36,11 @@ namespace Business.Implementation.Product_Business
             IGenericRepository<SubOfSubCategory> _subOfSubCategoryRepo,
             IGenericRepository<DocumentItem> _documentItemRepo,
             IGenericRepository<ProductInventory> _productInventoryReop,
-            IGenericRepository<Product> _productRepo, MARDBContext _context)
+            IGenericRepository<Product> _productRepo,
+            IGenericRepository<ProductSpecification> _productSpecificationRepo,
+             IGenericRepository<UsersComment> _usersCommentrRepo,
+             IGenericRepository<User> _usersRepo,
+             IMapper mapper)
         {
 
             unitOfWork = _unitOfWork;
@@ -37,6 +50,11 @@ namespace Business.Implementation.Product_Business
             productInventoryReop = _productInventoryReop;
             documentItemRepo = _documentItemRepo;
             productRepo = _productRepo;
+            this.productSpecificationRepo = _productSpecificationRepo;
+            this.usersCommentrRepo = _usersCommentrRepo;
+            this.usersRepo = _usersRepo;
+            _mapper = mapper;
+
         }
 
         public void Delete(object id)
@@ -55,23 +73,55 @@ namespace Business.Implementation.Product_Business
             throw new NotImplementedException();
         }
 
-        public List<ProductList> GetAllProducts(Descriptor descriptor)
+        public List<ProductListDTO> GetAllProducts(Descriptor descriptor)
         {
-            throw new NotImplementedException();
+            var query = productRepo.GetAll().AsQueryable();
+
+           var Products = DescriptorProccer.QuryExcuter(descriptor, query);
+
+            List<ProductListDTO> productVms = new List<ProductListDTO>();
+            foreach (var Product in Products)
+            {
+
+
+                ProductListDTO pvm = new ProductListDTO
+                {
+                    Id = Product.Id,
+                    ProductName = Product.ProductName,
+                    ProductDescritpion = Product.ProductDescritpion,
+                    ProductPrice = Product.ProductPrice,
+                    UserNo = Product.UserNo,
+                    UserName = usersRepo.GetAll().FirstOrDefault(q=>q.Id == Product.UserNo)?.UserName,
+                    UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
+                    ProductUnit = Product.ProductUnit,
+                    ProductImageUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).FirstOrDefault().DocumentUrl,
+
+                };
+                productVms.Add(pvm);
+            }
+
+            return productVms;
         }
 
-        public ProductDetails GetProductDetails(int id)
+        public ProductDetailsDTO GetProductDetails(int id)
         {
-            var product = unitOfWork.GetRepository<Product>().GetById(id);
-            //var productCategory = unitOfWork.GetRepository<ProductCategory>().GetById(id);
-            //var subCategory = unitOfWork.GetRepository<SubCategory>().GetById(id);
-            //var subOfSubCategory = unitOfWork.GetRepository<SubOfSubCategory>().GetById(id);
-            //var document = unitOfWork.GetRepository<DocumentItem>().GetById(id);
-            //var productInventory = unitOfWork.GetRepository<ProductInventory>().GetById(product.ProductInventoryNo);
-            var productDetails = new ProductDetails
+
+            var product = productRepo.GetAllWithChildren(
+                p => p.SubCategory,
+                p => p.ProductCategory,
+                p => p.ProductInventory,
+                p => p.ProductDiscount
+                ).FirstOrDefault(p => p.Id == id);
+
+
+            var productImages = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).ToList();
+            var productComment = usersCommentrRepo.GetAll()?.Where(q => q.RefranceNumber == product.Id && (int)q.CommentType == (int)CommentType.ProductComment)?.ToList();
+            var ProductSpecification = productSpecificationRepo.GetAll()?.Where(q => q.ProductNo == product.Id)?.ToList();
+
+
+            var productDetails = new ProductDetailsDTO
             {
                 Id = product.Id,
-
                 ProductName = product.ProductName,
                 ProductDescritpion = product.ProductDescritpion,
                 ProductPrice = product.ProductPrice,
@@ -87,12 +137,19 @@ namespace Business.Implementation.Product_Business
                 ProductDiscount = product.ProductDiscount,
                 UserNo = product.UserNo,
                 ProductUnit = product.ProductUnit,
+                ProductComments = productComment,
+                ProductSpecifications = ProductSpecification,
+                ProductImages = productImages,
                 ProductCreatedDate = product.ProductCreatedDate,
                 ProductModifiedDate = product.ProductModifiedDate,
-
-               // ProductImages = unitOfWork.GetRepository()..DocumentItems.Where(q => q.RefereneceNumber == product.Id && q.DocumentType == DocumentItemType.ProductImage).ToList()//), e => e.Id, d => d.RefreneceNumber, (Product, ProductImage) => new { product.Id, Productinfo = Product, ProductImage 
+                
+                
             };
-            return new ProductDetails();
+
+
+
+
+            return productDetails;
         }
 
         public void Insert(Product entity)
@@ -100,15 +157,52 @@ namespace Business.Implementation.Product_Business
             throw new NotImplementedException();
         }
 
-        public void Update(Product entity)
+        public void UpdateProduct(ProductPayloadDTO entity)
         {
-            productRepo.Update(entity);
+
+            Product product = _mapper.Map<Product>(entity);
+
+
+
+
+            productRepo.Update(product);
+
+            //foreach (var item in entity.Images)
+            //{
+
+
+            //    var documrntGuid = new Guid; 
+            //    var doc = new DocumentItem {
+            //        DocuemntName = documrntGuid,
+            //        DocumentType = DocumentItemType.ProductImage,
+            //        RefereneceNumber = entity.Id
+
+            //    }
+            //    documentItemRepo.Update(entity);
+
+            //}
+
+
+
+          
             unitOfWork.Commit();
         }
 
         Product IGenericRepository<Product>.GetById(object id)
         {
-          return productRepo.GetById(id);
+
+
+            return productRepo.GetById(id);
+        }
+
+        public IEnumerable<Product> GetAllWithChildren(params Expression<Func<Product, object>>[] includeProperties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Product entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231214150420_AddCommenttbls")]
+    partial class AddCommenttbls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,8 +144,6 @@ namespace Entities.Migrations
                     b.HasIndex("SubCategoryNo");
 
                     b.HasIndex("SubOfSubCategoryNo");
-
-                    b.HasIndex("UserNo");
 
                     b.ToTable("Products");
                 });
@@ -629,19 +629,11 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.User_Management.User", "ProductUser")
-                        .WithMany()
-                        .HasForeignKey("UserNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProductCategory");
 
                     b.Navigation("ProductDiscount");
 
                     b.Navigation("ProductInventory");
-
-                    b.Navigation("ProductUser");
 
                     b.Navigation("SubCategory");
 

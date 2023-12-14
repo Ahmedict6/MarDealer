@@ -29,6 +29,7 @@ namespace Entities
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+
         public DbSet<ProductDiscount> ProductDiscounts { get; set; }
         public DbSet<ProductInventory> ProductInventories { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -39,6 +40,8 @@ namespace Entities
         public DbSet<UserAddressInformation> UserAddressInformations { get; set; }
         public DbSet<UserPaymentInformation> UserPaymentInformations { get; set; }
         public DbSet<DocumentItem> DocumentItems { get; set; }
+        public DbSet<UsersComment> UsersComments{ get; set; }
+        public DbSet<ProductSpecification> ProductSpecifications { get; set; }
         //public DbSet<User> Users { get; set; }
         //public DbSet<Role> Roles { get; set; }
 

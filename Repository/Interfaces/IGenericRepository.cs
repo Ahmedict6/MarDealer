@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Repository.Interfaces
@@ -12,6 +13,12 @@ namespace Repository.Interfaces
         void Insert(T entity);
         void Update(T entity);
         void Delete(object id);
-        
+        IEnumerable<T> GetAllWithChildren(params  Expression<Func<T, object>>[] includeProperties);
+
+
+
+
+
+
     }
 }

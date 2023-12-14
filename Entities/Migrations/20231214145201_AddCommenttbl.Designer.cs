@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231214145201_AddCommenttbl")]
+    partial class AddCommenttbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,40 +53,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DocumentItems");
-                });
-
-            modelBuilder.Entity("Entities.Models.Common.UsersComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CommentCreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CommentModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CommentReviewStars")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CommentText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CommentType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RefranceNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserNo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UsersComments");
                 });
 
             modelBuilder.Entity("Entities.Models.Product_Management.Product", b =>
@@ -142,8 +110,6 @@ namespace Entities.Migrations
                     b.HasIndex("SubCategoryNo");
 
                     b.HasIndex("SubOfSubCategoryNo");
-
-                    b.HasIndex("UserNo");
 
                     b.ToTable("Products");
                 });
@@ -235,36 +201,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductInventories");
-                });
-
-            modelBuilder.Entity("Entities.Models.Product_Management.ProductSpecification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CategoryCreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CategoryModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SpecificationDescritpion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SpecificationName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductNo");
-
-                    b.ToTable("ProductSpecifications");
                 });
 
             modelBuilder.Entity("Entities.Models.Product_Management.SubCategory", b =>
@@ -629,34 +565,15 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.User_Management.User", "ProductUser")
-                        .WithMany()
-                        .HasForeignKey("UserNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProductCategory");
 
                     b.Navigation("ProductDiscount");
 
                     b.Navigation("ProductInventory");
 
-                    b.Navigation("ProductUser");
-
                     b.Navigation("SubCategory");
 
                     b.Navigation("SubOfSubCategory");
-                });
-
-            modelBuilder.Entity("Entities.Models.Product_Management.ProductSpecification", b =>
-                {
-                    b.HasOne("Entities.Models.Product_Management.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Entities.Models.Product_Management.SubCategory", b =>

@@ -8,8 +8,8 @@ namespace Business.Interfaces.Product_Business
 {
     public interface IProductBusiness : IGenericRepository<Product>
     {
-        List<ProductList> GetAllProducts(Descriptor descriptor);
-        ProductDetails GetProductDetails(int id);
-        // List<ProductDetails> GetProductDetails(int v);
+        List<ProductListDTO> GetAllProducts(Descriptor descriptor);
+        ProductDetailsDTO GetProductDetails(int id);
+        void UpdateProduct(ProductPayloadDTO productData);
     }
 }

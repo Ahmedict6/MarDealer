@@ -1,3 +1,5 @@
+using AutoMapper;
+using Business.Common;
 using Business.Implementation.Common;
 using Business.Implementation.Product_Business;
 using Business.Interfaces.Common;
@@ -36,6 +38,15 @@ builder.Services.AddTransient<ISubCategoryBusiness, SubCategoryBusiness>();
 builder.Services.AddTransient<ISubOfSubCategoryBusiness, SubOfSubCategoryBusiness>();
 builder.Services.AddTransient<IDocumentItemBusiness, DocumentItemBusiness>();
 builder.Services.AddTransient<IProductBusiness, ProductBusiness>();
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AutoMapperConfig());
+});
+
+
+builder.Services.AddAutoMapper(typeof(Program));
+
+
 
 var app = builder.Build();
 

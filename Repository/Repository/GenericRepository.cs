@@ -57,10 +57,16 @@ namespace Repository
             _context.Dispose();
         }
 
+        public IEnumerable<T> GetAllWithChildren(params Expression<Func<T, object>>[] includeProperties)
+        {
+            var query = _context.Set<T>().AsQueryable();
 
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
 
-
-
-
+            return query.ToList();
+        }
     }
 }
