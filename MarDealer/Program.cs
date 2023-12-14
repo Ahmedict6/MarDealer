@@ -42,10 +42,8 @@ var config = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AutoMapperConfig());
 });
-
-
-builder.Services.AddAutoMapper(typeof(Program));
-
+IMapper mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 
 var app = builder.Build();

@@ -15,7 +15,8 @@ namespace Business.Common
 
         public AutoMapperConfig()
         {
-            CreateMap<Product, ProductPayloadDTO>();
+           // CreateMap<Product, ProductPayloadDTO>();
+            CreateMap<ProductPayloadDTO, Product>();
         }
     }
 }
