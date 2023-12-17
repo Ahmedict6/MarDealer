@@ -66,8 +66,8 @@ namespace Business.Coomon
             }
 
 
-
-            foreach (var item in descriptor.filter)
+            if(descriptor?.filter!=null)
+            foreach (var item in descriptor?.filter)
             {
 
                 switch (item.Opration.ToLower())

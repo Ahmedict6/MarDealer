@@ -1,17 +1,14 @@
-﻿using Entities.Models.Product_Management;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models.User_Management
+namespace DTOs.User_DTOs
 {
-    public class User
+    public record UserListDTO
     {
-        [Key]
         public int Id { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }

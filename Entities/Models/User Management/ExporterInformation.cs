@@ -8,19 +8,18 @@ using System.Threading.Tasks;
 
 namespace Entities.Models.User_Management
 {
-    public class UserAddressInformation
+    public class ExporterInformation
     {
         [Key]
         public int Id { get; set; }
         public int UserNo{ get; set; }
         [ForeignKey("UserNo")]
         public virtual User User { get; set; }
-        public string? Address1 { get; set; }
-        public string? Address2 { get; set; }
-        public string? City { get; set; }
-        public string? Country { get; set; }
-        public string? Mobile { get; set; }
-        public string? Telephone { get; set; }
+        public string? ExporterName { get; set; }
+        public int ExportPercentage { get; set; }
+        public decimal FrightPrice { get; set; }
+        public string? SocialInsuracePrice { get; set; }
+        public DateTime FoundationDate { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
     }

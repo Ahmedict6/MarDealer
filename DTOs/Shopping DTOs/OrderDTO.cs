@@ -12,7 +12,7 @@ namespace DTOs.Shopping_DTOs
     {
         public int Id { get; set; }
         public int UserNo { get; set; }
-        public  UserDTO User { get; set; }
+        public int ExporterNo { get; set; }
         public int PyamentNo { get; set; }
         public  OrderPaymentDTO OrderPayment { get; set; }
         public decimal Total { get; set; }

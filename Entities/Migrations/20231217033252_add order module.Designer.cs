@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231217033252_add order module")]
+    partial class addordermodule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,9 +73,6 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LookupType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LookupValue")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PaymentTypeCreatedDate")
@@ -367,17 +366,14 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ExporterNo")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderCreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PaymentType")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PyamentNo")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -386,6 +382,8 @@ namespace Entities.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PyamentNo");
 
                     b.HasIndex("UserNo");
 
@@ -444,7 +442,7 @@ namespace Entities.Migrations
                     b.Property<DateTime>("PaymentModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PyamentDescription")
+                    b.Property<string>("Provider")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -565,6 +563,8 @@ namespace Entities.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserTypeNo");
+
                     b.ToTable("Users");
                 });
 
@@ -674,6 +674,31 @@ namespace Entities.Migrations
                     b.ToTable("UserPaymentInformations");
                 });
 
+            modelBuilder.Entity("Entities.Models.User_Management.UserType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("UserTypeCreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserTypeDescritpion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UserTypeModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserType");
+                });
+
             modelBuilder.Entity("Entities.Models.Product_Management.Product", b =>
                 {
                     b.HasOne("Entities.Models.Product_Management.ProductCategory", "ProductCategory")
@@ -752,11 +777,19 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Shopping_Management.Order", b =>
                 {
+                    b.HasOne("Entities.Models.Shopping_Management.OrderPayment", "OrderPayment")
+                        .WithMany()
+                        .HasForeignKey("PyamentNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Entities.Models.User_Management.User", "User")
                         .WithMany()
                         .HasForeignKey("UserNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("OrderPayment");
 
                     b.Navigation("User");
                 });
@@ -789,6 +822,17 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.User_Management.User", b =>
+                {
+                    b.HasOne("Entities.Models.User_Management.UserType", "UserType")
+                        .WithMany()
+                        .HasForeignKey("UserTypeNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("Entities.Models.User_Management.UserAddressInformation", b =>

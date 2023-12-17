@@ -3,6 +3,7 @@ using Entities.Models.Product_Management;
 using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Entities
 {
@@ -42,8 +43,9 @@ namespace Entities
         public DbSet<DocumentItem> DocumentItems { get; set; }
         public DbSet<UsersComment> UsersComments{ get; set; }
         public DbSet<ProductSpecification> ProductSpecifications { get; set; }
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<Role> Roles { get; set; }
+        public DbSet<ExporterInformation> Exporters { get; set; }
+        public DbSet<UserOrderAddress> UserOrderAddresses { get; set; }
+        public DbSet<LookupData> LookupData { get; set; }
 
     }
 }

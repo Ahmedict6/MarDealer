@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DTOs.User_DTOs
 {
-    public record UserDTO
+    public record UserDetailsDTO
     {
         public int Id { get; set; }
         public string? UserName { get; set; }
@@ -15,7 +15,6 @@ namespace DTOs.User_DTOs
         public string? Mobile { get; set; }
         public string? FullName { get; set; }
         public int UserTypeNo { get; set; }
-        public  UserTypeDTO UserType { get; set; }
         public int UserInformationNo { get; set; }
         public int? UserPaymentInformationNo { get; set; }
         public DateTime UserCreatedDate { get; set; }

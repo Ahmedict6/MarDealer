@@ -2,9 +2,12 @@ using AutoMapper;
 using Business.Common;
 using Business.Implementation.Common;
 using Business.Implementation.Product_Business;
+using Business.Implementation.Shopping;
 using Business.Interfaces.Common;
 using Business.Interfaces.Product_Business;
+using Business.Interfaces.Shopping;
 using Entities;
+using Entities.Models.Common;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.Interfaces;
@@ -38,6 +41,14 @@ builder.Services.AddTransient<ISubCategoryBusiness, SubCategoryBusiness>();
 builder.Services.AddTransient<ISubOfSubCategoryBusiness, SubOfSubCategoryBusiness>();
 builder.Services.AddTransient<IDocumentItemBusiness, DocumentItemBusiness>();
 builder.Services.AddTransient<IProductBusiness, ProductBusiness>();
+builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
+builder.Services.AddTransient<IOrderItemBusiness, OrderItemBusiness>();
+builder.Services.AddTransient<IOrderPaymentBusiness, OrderPaymentBusiness>();
+builder.Services.AddTransient<ILookupDataBusiness, LookupDataBusiness>();
+builder.Services.AddTransient<IProductBusiness, ProductBusiness>();
+builder.Services.AddTransient<IUserBusiness, UserBusiness>();
+
+// auto mapper config
 var config = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AutoMapperConfig());

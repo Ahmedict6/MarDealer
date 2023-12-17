@@ -13,7 +13,7 @@ namespace Entities.Models.Shopping_Management
         public int Id { get; set; }
         public int OrderNo { get; set; }
         public decimal Amount { get; set; }
-        public string? Provider { get; set; }
+        public string? PyamentDescription { get; set; }
         public int Status { get; set; }
         public DateTime PaymentCreatedDate { get; set; }
         public DateTime PaymentModifiedDate { get; set; }
