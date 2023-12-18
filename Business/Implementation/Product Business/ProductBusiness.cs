@@ -28,7 +28,7 @@ namespace Business.Implementation.Product_Business
         private IGenericRepository<ProductSpecification> productSpecificationRepo;
         private IGenericRepository<UsersComment> usersCommentrRepo;
         private IGenericRepository<User> usersRepo;
-        private   IMapper _mapper;
+        private IMapper _mapper;
 
         public ProductBusiness(IUnitOfWork _unitOfWork,
             IGenericRepository<SubCategory> _subCategoryRepo,
@@ -77,7 +77,7 @@ namespace Business.Implementation.Product_Business
         {
             var query = productRepo.GetAll().AsQueryable();
 
-           var Products = DescriptorProccer.QuryExcuter(descriptor, query);
+            var Products = DescriptorProccer.QuryExcuter(descriptor, query);
 
             List<ProductListDTO> productVms = new List<ProductListDTO>();
             foreach (var Product in Products)
@@ -91,7 +91,7 @@ namespace Business.Implementation.Product_Business
                     ProductDescritpion = Product.ProductDescritpion,
                     ProductPrice = Product.ProductPrice,
                     UserNo = Product.UserNo,
-                    UserName = usersRepo.GetAll().FirstOrDefault(q=>q.Id == Product.UserNo)?.UserName,
+                    UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == Product.UserNo)?.UserName,
                     UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
                     ProductUnit = Product.ProductUnit,
                     ProductImageUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).FirstOrDefault().DocumentUrl,
@@ -142,8 +142,8 @@ namespace Business.Implementation.Product_Business
                 ProductImages = productImages,
                 ProductCreatedDate = product.ProductCreatedDate,
                 ProductModifiedDate = product.ProductModifiedDate,
-                
-                
+
+
             };
 
 
@@ -166,25 +166,30 @@ namespace Business.Implementation.Product_Business
 
 
             productRepo.Update(product);
+            var oldImages = documentItemRepo.GetAll().Where(x => x.RefereneceNumber == entity.Id && (int)x.DocumentType == (int)DocumentItemType.ProductImage);
+            foreach (var image in oldImages)
+            {
+                documentItemRepo.Delete(image.Id);
+            }
 
-            //foreach (var item in entity.Images)
-            //{
+            foreach (var item in entity.Images)
+            {
+                var documrntGuid = new Guid();
+                if (SaveImage(item, documrntGuid.ToString()) {
+                    var doc = new DocumentItem
+                    {
+                        DocuemntName = documrntGuid.ToString(),
+                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        RefereneceNumber = entity.Id,
+                        DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                    };
+                    documentItemRepo.Insert(doc);
+                }
+            }
 
 
-            //    var documrntGuid = new Guid; 
-            //    var doc = new DocumentItem {
-            //        DocuemntName = documrntGuid,
-            //        DocumentType = DocumentItemType.ProductImage,
-            //        RefereneceNumber = entity.Id
-
-            //    }
-            //    documentItemRepo.Update(entity);
-
-            //}
 
 
-
-          
             unitOfWork.Commit();
         }
 
@@ -201,6 +206,32 @@ namespace Business.Implementation.Product_Business
         }
 
         public void Update(Product entity)
+        {
+            throw new NotImplementedException();
+        }
+        public bool SaveImage(string ImgStr, string ImgName)
+        {
+            String path = Path.GetFullPath("wwwroot/Document");//Path
+
+            //Check if directory exist
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+            }
+
+            string imageName = ImgName + ".jpg";
+
+            //set the image path
+            string imgPath = Path.Combine(path, imageName);
+
+            byte[] imageBytes = Convert.FromBase64String(ImgStr);
+
+            File.WriteAllBytes(imgPath, imageBytes);
+
+            return true;
+        }
+
+        public void DeleteRange(object id)
         {
             throw new NotImplementedException();
         }
