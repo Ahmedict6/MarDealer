@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231219000150_updateUser")]
+    partial class updateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,14 +66,8 @@ namespace Entities.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LookupCreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LookupDescription")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LookupModifiedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("LookupName")
                         .HasColumnType("nvarchar(max)");
@@ -81,6 +77,12 @@ namespace Entities.Migrations
 
                     b.Property<string>("LookupValue")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PaymentTypeCreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentTypeModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -534,21 +536,6 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Address2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -558,11 +545,11 @@ namespace Entities.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Telephone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("UserCreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("UserInformationNo")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UserModifiedDate")
                         .HasColumnType("datetime2");
@@ -579,6 +566,48 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Entities.Models.User_Management.UserAddressInformation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UserCreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UserModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserNo");
+
+                    b.ToTable("UserAddressInformations");
                 });
 
             modelBuilder.Entity("Entities.Models.User_Management.UserOrderAddress", b =>
@@ -741,6 +770,17 @@ namespace Entities.Migrations
                 });
 
             modelBuilder.Entity("Entities.Models.User_Management.ExporterInformation", b =>
+                {
+                    b.HasOne("Entities.Models.User_Management.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entities.Models.User_Management.UserAddressInformation", b =>
                 {
                     b.HasOne("Entities.Models.User_Management.User", "User")
                         .WithMany()

@@ -171,7 +171,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-        [HttpPost("/ForgetPassword")]
+        [HttpPost("ForgetPassword")]
         public async Task<ApiResponse<string>> ForgetPassword(ForgetPasswordDTO User)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();
@@ -182,7 +182,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-        [HttpPost("/ChangePassword")]
+        [HttpPost("ChangePassword")]
         public async Task<ApiResponse<string>> ChangePassword(ChangePasswordDTO User)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();
@@ -192,6 +192,32 @@ namespace MarDealer.Controllers
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;
         }
+
+
+        [HttpPost("AddUsersComment")]
+        public async Task<ApiResponse<string>> AddUsersComment(UsersCommentDTO usersComment)
+        {
+            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
+            _userBusiness.AddUsersComment(usersComment);
+
+            _ApiResponse.Data = "comment/Review added Successfully ";
+            _ApiResponse.Message = "added Successfully ";
+            return _ApiResponse;
+        }
+
+
+         [HttpPost("SendOTP")]
+        public async Task<ApiResponse<string>> SendUserOTP(LoginDTO login)
+        {
+            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
+            _userBusiness.sendUserOTP(login);
+
+            _ApiResponse.Data = "";
+            _ApiResponse.Message = "Send OTP Successfully ";
+            return _ApiResponse;
+        }
+
+
 
     }
 }

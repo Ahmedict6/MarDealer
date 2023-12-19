@@ -22,10 +22,21 @@ namespace DTOs.Product_DTOs
         public int ProductInventoryNo { get; set; }
         public int ProductDiscountNo { get; set; }
         public int UserNo { get; set; }
+        public String[] Images { get; set; }
+        public List<ProductSpecificationShortDTO> ProductSpecifications { get; set; }
         public string? ProductUnit { get; set; }
         public AttachmentDTO[] Images { get; set; }
 
 
 
     }
+    public record ProductSpecificationShortDTO
+    {
+        public string? SpecificationName { get; set; }
+        public string? SpecificationDescritpion { get; set; }
+
+    }
+
+    
+
 }

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using DTOs.Common_DTOs;
 using DTOs.Product_DTOs;
 using DTOs.Shopping_DTOs;
+using DTOs.User_DTOs;
+using Entities.Models.Common;
 using DTOs.User_DTOs;
 using Entities.Models.Product_Management;
 using Entities.Models.Shopping_Management;
@@ -20,6 +23,8 @@ namespace Business.Common
         {
             // CreateMap<Product, ProductPayloadDTO>();
             CreateMap<ProductPayloadDTO, Product>();
+            CreateMap<UsersCommentDTO, UsersComment>();
+            CreateMap<ProductSpecification, ProductSpecificationDTO>();
             CreateMap<OrderItem, OrderItemDTO>();
             CreateMap<OrderPayment, OrderPaymentDTO>();
             CreateMap<User, UserDTO>();

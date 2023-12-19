@@ -26,7 +26,7 @@ var st = builder.Configuration.GetConnectionString("DefaultConnection");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<MARDBContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Entities")),
-ServiceLifetime.Transient);
+ServiceLifetime.Scoped);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,8 +36,8 @@ builder.Services.AddSwaggerGen();
 //});
 
 // register business
-builder.Services.AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork));
-builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProductCategoryBusiness, ProductCategoryBusiness>();
 builder.Services.AddTransient<IProductInventoryBusiness, ProductInventoryBusiness>();
 builder.Services.AddTransient<ISubCategoryBusiness, SubCategoryBusiness>();

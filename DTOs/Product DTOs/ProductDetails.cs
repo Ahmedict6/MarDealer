@@ -31,7 +31,7 @@ namespace DTOs.Product_DTOs
         public virtual ProductDiscount ProductDiscount { get; set; }
         public List<DocumentItem> ProductImages { get; set; }
         public List<UsersComment> ProductComments { get; set; }
-        public List<ProductSpecification> ProductSpecifications { get; set; }
+        public List<ProductSpecificationDTO> ProductSpecifications { get; set; }
 
         public int UserNo { get; set; }
         public string? ProductUnit { get; set; }

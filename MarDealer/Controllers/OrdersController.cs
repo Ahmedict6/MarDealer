@@ -23,7 +23,7 @@ namespace MarDealer.Controllers
             this._orderBussiness = productBusiness;
         }
 
-        [HttpGet("/GetPaymentTypes")]
+        [HttpGet("GetPaymentTypes")]
         public async Task<ApiResponse<List<LookupDTO>>> GetPayments()
         {
             ApiResponse<List<LookupDTO>> _ApiResponse = new ApiResponse<List<LookupDTO>>();
@@ -41,7 +41,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
 
         }
-        [HttpGet("/GetExporters")]
+        [HttpGet("GetExporters")]
         public async Task<ApiResponse<List<ExporterDTO>>> GetExporters()
         {
             ApiResponse<List<ExporterDTO>> response = new ApiResponse<List<ExporterDTO>>();
@@ -124,7 +124,7 @@ namespace MarDealer.Controllers
         }
 
 
-        [HttpPost("/GetOrders")]
+        [HttpPost("GetOrders")]
         public Task<ApiResponse<List<OrderListDTO>>> GetOrders(Descriptor descriptor)
         {
             ApiResponse<List<OrderListDTO>> response = new ApiResponse<List<OrderListDTO>>();

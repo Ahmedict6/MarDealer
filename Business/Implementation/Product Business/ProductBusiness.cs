@@ -25,7 +25,7 @@ namespace Business.Implementation.Product_Business
         private IGenericRepository<ProductSpecification> productSpecificationRepo;
         private IGenericRepository<UsersComment> usersCommentrRepo;
         private IGenericRepository<User> usersRepo;
-        private   IMapper _mapper;
+        private IMapper _mapper;
 
         public ProductBusiness(IUnitOfWork _unitOfWork,
             IGenericRepository<SubCategory> _subCategoryRepo,
@@ -56,6 +56,22 @@ namespace Business.Implementation.Product_Business
 
         public void Delete(object id)
         {
+
+
+
+            var productspecifications = productSpecificationRepo.GetAll().Where(x => x.ProductNo == (int)id);
+            foreach (var specification in productspecifications)
+            {
+                productSpecificationRepo.Delete(specification.Id);
+            }
+
+            var productImages = documentItemRepo.GetAll().Where(x => x.RefereneceNumber == (int)id && (int)x.DocumentType == (int)DocumentItemType.ProductImage);
+            foreach (var image in productImages)
+            {
+                documentItemRepo.Delete(image.Id);
+            }
+
+
             productRepo.Delete(id);
             unitOfWork.Commit();
         }
@@ -74,7 +90,7 @@ namespace Business.Implementation.Product_Business
         {
             var query = productRepo.GetAll().AsQueryable();
 
-           var Products = DescriptorProccer.QuryExcuter(descriptor, query);
+            var Products = DescriptorProccer.QuryExcuter(descriptor, query);
 
             List<ProductListDTO> productVms = new List<ProductListDTO>();
             foreach (var Product in Products)
@@ -88,7 +104,7 @@ namespace Business.Implementation.Product_Business
                     ProductDescritpion = Product.ProductDescritpion,
                     ProductPrice = Product.ProductPrice,
                     UserNo = Product.UserNo,
-                    UserName = usersRepo.GetAll().FirstOrDefault(q=>q.Id == Product.UserNo)?.UserName,
+                    UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == Product.UserNo)?.UserName,
                     UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
                     ProductUnit = Product.ProductUnit,
                     ProductImageUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).FirstOrDefault().DocumentUrl,
@@ -135,12 +151,12 @@ namespace Business.Implementation.Product_Business
                 UserNo = product.UserNo,
                 ProductUnit = product.ProductUnit,
                 ProductComments = productComment,
-                ProductSpecifications = ProductSpecification,
+                ProductSpecifications = _mapper.Map<List<ProductSpecificationDTO>>(ProductSpecification) ,
                 ProductImages = productImages,
                 ProductCreatedDate = product.ProductCreatedDate,
                 ProductModifiedDate = product.ProductModifiedDate,
-                
-                
+
+
             };
 
 
@@ -154,34 +170,96 @@ namespace Business.Implementation.Product_Business
             throw new NotImplementedException();
         }
 
+
+        public void InsertProduct(ProductPayloadDTO entity)
+        {
+            Product product = _mapper.Map<Product>(entity);
+            productRepo.Insert(product);
+            unitOfWork.Commit();
+            foreach (var item in entity.Images)
+            {
+                var documrntGuid = Guid.NewGuid(); ;
+                if (SaveImage(item, documrntGuid.ToString()))
+                {
+                    var doc = new DocumentItem
+                    {
+                        DocuemntName = documrntGuid.ToString(),
+                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        RefereneceNumber = product.Id,
+                        DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                    };
+                    documentItemRepo.Insert(doc);
+                }
+            }
+
+
+            foreach (var NewProdectspecification in entity.ProductSpecifications)
+            {
+                var NewProdectspecificationItem = new ProductSpecification
+                {
+
+                    ProductNo = product.Id,
+                    SpecificationName = NewProdectspecification.SpecificationName,
+                    SpecificationDescritpion = NewProdectspecification.SpecificationDescritpion
+
+                };
+                productSpecificationRepo.Insert(NewProdectspecificationItem);
+
+            }
+
+
+            unitOfWork.Commit();
+        }
+
+
         public void UpdateProduct(ProductPayloadDTO entity)
         {
 
             Product product = _mapper.Map<Product>(entity);
-
-
-
-
             productRepo.Update(product);
+            var oldImages = documentItemRepo.GetAll().Where(x => x.RefereneceNumber == entity.Id && (int)x.DocumentType == (int)DocumentItemType.ProductImage);
+            foreach (var image in oldImages)
+            {
+                documentItemRepo.Delete(image.Id);
+            }
 
-            //foreach (var item in entity.Images)
-            //{
+            foreach (var item in entity.Images)
+            {
+                var documrntGuid = Guid.NewGuid(); ;
+                if (SaveImage(item, documrntGuid.ToString()))
+                {
+                    var doc = new DocumentItem
+                    {
+                        DocuemntName = documrntGuid.ToString(),
+                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        RefereneceNumber = entity.Id,
+                        DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                    };
+                    documentItemRepo.Insert(doc);
+                }
+            }
+
+            var oldspecifications = productSpecificationRepo.GetAll().Where(x => x.ProductNo == entity.Id);
+            foreach (var oldspecification in oldspecifications)
+            {
+                productSpecificationRepo.Delete(oldspecification.Id);
+            }
+
+            foreach (var NewProdectspecification in entity.ProductSpecifications)
+            {
+                var NewProdectspecificationItem = new ProductSpecification
+                {
+
+                    ProductNo = entity.Id,
+                    SpecificationName = NewProdectspecification.SpecificationName,
+                    SpecificationDescritpion = NewProdectspecification.SpecificationDescritpion
+
+                };
+                productSpecificationRepo.Insert(NewProdectspecificationItem);
+
+            }
 
 
-            //    var documrntGuid = new Guid; 
-            //    var doc = new DocumentItem {
-            //        DocuemntName = documrntGuid,
-            //        DocumentType = DocumentItemType.ProductImage,
-            //        RefereneceNumber = entity.Id
-
-            //    }
-            //    documentItemRepo.Update(entity);
-
-            //}
-
-
-
-          
             unitOfWork.Commit();
         }
 
@@ -201,63 +279,31 @@ namespace Business.Implementation.Product_Business
         {
             throw new NotImplementedException();
         }
-
-        public void AddProduct(ProductPayloadDTO entity)
+        public bool SaveImage(string ImgStr, string ImgName)
         {
-            Product product = _mapper.Map<Product>(entity);
-            OrderPayment payment = _mapper.Map<OrderPayment>(entity);
-           // List<OrderItem> orderItems = _mapper.Map<List<OrderItem>>(entity.Images);
-            productRepo.Insert(product);
-            foreach (var item in entity.Images)
+            String path = Path.GetFullPath("wwwroot/Document");//Path
+
+            //Check if directory exist
+            if (!System.IO.Directory.Exists(path))
             {
-                var docId = new Guid();
-                documentItemRepo.Insert(new DocumentItem() { DocuemntName=docId.ToString(),DocumentType=(int)(CommonEnums.DocumentItemType)item.AttachmentType});
+                System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
             }
-            unitOfWork.Commit();
+
+            string imageName = ImgName + ".jpg";
+
+            //set the image path
+            string imgPath = Path.Combine(path, imageName);
+
+            byte[] imageBytes = Convert.FromBase64String(ImgStr.Split("base64,")[1]);
+
+            File.WriteAllBytes(imgPath, imageBytes);
+
+            return true;
         }
 
-        public List<AllCategoriesDTO> GetAllCategories()
+        public void DeleteRange(object id)
         {
-            var category = productCategoryRepo.GetAll();
-            var subCategory = subCategoryRepo.GetAll();
-            var subOfSub = subOfSubCategoryRepo.GetAll();
-            var categoryList = new List<AllCategoriesDTO>();
-
-          
-            foreach (var item in category)
-            {
-                categoryList.Add(new AllCategoriesDTO()
-                {
-                    Id = item.Id,
-                    CategoryName = item.CategoryName,
-                    CategoryDescritpion = item.CategoryDescritpion,
-                    ParentNo = 0,
-                });
-            }
-            foreach (var item in subCategory)
-            {
-                categoryList.Add(new AllCategoriesDTO()
-                {
-                    Id = item.Id,
-                    CategoryName = item.CategoryName,
-                    CategoryDescritpion = item.CategoryDescritpion,
-                    ParentNo = item.CategoryNo,
-                });
-            }
-            
-            foreach (var item in subOfSub)
-            {
-                categoryList.Add(new AllCategoriesDTO()
-                {
-                    Id = item.Id,
-                    CategoryName = item.CategoryName,
-                    CategoryDescritpion = item.CategoryDescritpion,
-                    ParentNo = item.SubCategoryNo,
-                });
-            }
-
-            return categoryList;
+            throw new NotImplementedException();
         }
-
     }
 }

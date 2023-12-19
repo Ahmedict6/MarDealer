@@ -18,5 +18,9 @@ namespace Business.Interfaces.Shopping
         List<LookupDTO> GetUserTypes();
         UserDTO Login(LoginDTO user);
         void UpdateUser(UserPayloadDTO user);
+        void AddUsersComment(UsersCommentDTO Comment);
+
+
+        void sendUserOTP(LoginDTO login);
     }
 }

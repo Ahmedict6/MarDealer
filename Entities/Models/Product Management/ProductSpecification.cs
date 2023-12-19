@@ -15,7 +15,7 @@ namespace Entities.Models.Product_Management
 
         public int ProductNo { get; set; }
         [ForeignKey("ProductNo")]
-        public virtual Product? Product { get; set; }
+    //    public virtual Product? Product { get; set; }
         public string? SpecificationName { get; set; }
         public string? SpecificationDescritpion { get; set; }
         public DateTime CategoryCreatedDate { get; set; }

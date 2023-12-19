@@ -5,6 +5,7 @@ using DTOs.Common_DTOs;
 using DTOs.Shopping_DTOs;
 using DTOs.User_DTOs;
 using Entities.Models.Common;
+using Entities.Models.Product_Management;
 using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
 using Repository.Interfaces;
@@ -21,6 +22,8 @@ namespace Business.Implementation.Shopping
         private IGenericRepository<OrderPayment> paymentRepo;
         private IGenericRepository<ExporterInformation> exporterRepo;
         private IGenericRepository<User> usersRepo;
+        private IGenericRepository<UsersComment> UsersCommentRepo;
+        private IGenericRepository<Product> ProductRepo;
         private IMapper _mapper;
 
         public UserBusiness(IUnitOfWork _unitOfWork,
@@ -30,7 +33,9 @@ namespace Business.Implementation.Shopping
              IGenericRepository<ExporterInformation> _exporterRepo,
              IGenericRepository<User> _usersRepo,
              IGenericRepository<LookupData> _lookupRepo,
-             IMapper mapper)
+             IMapper mapper,
+             IGenericRepository<UsersComment> _usersCommentRepo,
+             IGenericRepository<Product> _productRepo)
         {
 
             unitOfWork = _unitOfWork;
@@ -41,7 +46,8 @@ namespace Business.Implementation.Shopping
             this.usersRepo = _usersRepo;
             this.lookupRepo = _lookupRepo;
             _mapper = mapper;
-
+            UsersCommentRepo = _usersCommentRepo;
+            ProductRepo = _productRepo;
         }
 
         public void Delete(object id)
@@ -91,43 +97,11 @@ namespace Business.Implementation.Shopping
         public UserDetailsDTO GetUserDetails(int id)
         {
 
-            var order = orderRepo.GetById(id);
-            if (order == null)
+            var user = usersRepo.GetById(id);
+            if (user == null)
                 return new UserDetailsDTO();
-            var exporterInfo = exporterRepo.GetAll(q => q.UserNo == order.UserNo).FirstOrDefault();
-            //var orderItems = orderItemRepo.GetAll(q => q.UserNo == order.Id).ToList();
-            //var payment = paymentRepo.GetAll(q => q.UserNo == order.Id).FirstOrDefault();
-            //var paymentDTO = _mapper.Map<OrderPaymentDTO>(payment);
-            ////var mapper =
-            //var orderItemsDTO = _mapper.Map<List<UserItemDTO>>(orderItems);
-            var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.UserNo).Count();
 
-            var orderDetails = new UserDetailsDTO
-            {
-                Id = order.Id,
-                //ExporterPrice = exporterInfo.FrightPrice,
-                //ExporterName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.FullName,
-                //ExporterDeals = exporterDealsNumber,
-                //OrderAdress = "address",// order.OrderPrice,
-                //OrderAdressMobile = "646566356",// order.OrderCategoryNo,
-                //ItemTotalTotalPrice = order.Total,
-                //OrderItems = orderItemsDTO,
-                //PaymentType = order.PaymentType,
-                //UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.UserName,
-                //OrderPayment = paymentDTO,
-
-                //UserNo = order.UserNo,
-
-                //OrderCreatedDate = order.OrderCreatedDate,
-                //OrderModifiedDate = order.OrderModifiedDate,
-
-
-            };
-
-
-
-
-            return orderDetails;
+            return _mapper.Map<UserDetailsDTO>(user);
         }
 
         public void Insert(User entity)
@@ -137,16 +111,9 @@ namespace Business.Implementation.Shopping
         public void AddUser(UserPayloadDTO entity)
         {
 
-            User order = _mapper.Map<User>(entity);
-            //UserPayment payment = _mapper.Map<UserPayment>(entity);
-            //List<OrderItem> orderItems = _mapper.Map<List<OrderItem>>(entity.OrderItems);
-            //orderRepo.Insert(order);
-            //paymentRepo.Insert(payment);
-            //foreach (var item in orderItems)
-            //{
-            //    orderItemRepo.Insert(item);
-            //}
-
+            User user = _mapper.Map<User>(entity);
+            usersRepo.Insert(user);
+            unitOfWork.Commit();
         }
 
         public void UpdateUser(UserPayloadDTO entity)
