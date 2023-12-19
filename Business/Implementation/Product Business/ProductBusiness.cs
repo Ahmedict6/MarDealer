@@ -59,6 +59,22 @@ namespace Business.Implementation.Product_Business
 
         public void Delete(object id)
         {
+
+
+
+            var productspecifications = productSpecificationRepo.GetAll().Where(x => x.ProductNo == (int)id);
+            foreach (var specification in productspecifications)
+            {
+                productSpecificationRepo.Delete(specification.Id);
+            }
+
+            var productImages = documentItemRepo.GetAll().Where(x => x.RefereneceNumber == (int)id && (int)x.DocumentType == (int)DocumentItemType.ProductImage);
+            foreach (var image in productImages)
+            {
+                documentItemRepo.Delete(image.Id);
+            }
+
+
             productRepo.Delete(id);
             unitOfWork.Commit();
         }
@@ -138,7 +154,7 @@ namespace Business.Implementation.Product_Business
                 UserNo = product.UserNo,
                 ProductUnit = product.ProductUnit,
                 ProductComments = productComment,
-                ProductSpecifications = ProductSpecification,
+                ProductSpecifications = _mapper.Map<List<ProductSpecificationDTO>>(ProductSpecification) ,
                 ProductImages = productImages,
                 ProductCreatedDate = product.ProductCreatedDate,
                 ProductModifiedDate = product.ProductModifiedDate,
@@ -157,14 +173,52 @@ namespace Business.Implementation.Product_Business
             throw new NotImplementedException();
         }
 
+
+        public void InsertProduct(ProductPayloadDTO entity)
+        {
+            Product product = _mapper.Map<Product>(entity);
+            productRepo.Insert(product);
+            unitOfWork.Commit();
+            foreach (var item in entity.Images)
+            {
+                var documrntGuid = Guid.NewGuid(); ;
+                if (SaveImage(item, documrntGuid.ToString()))
+                {
+                    var doc = new DocumentItem
+                    {
+                        DocuemntName = documrntGuid.ToString(),
+                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        RefereneceNumber = product.Id,
+                        DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                    };
+                    documentItemRepo.Insert(doc);
+                }
+            }
+
+
+            foreach (var NewProdectspecification in entity.ProductSpecifications)
+            {
+                var NewProdectspecificationItem = new ProductSpecification
+                {
+
+                    ProductNo = product.Id,
+                    SpecificationName = NewProdectspecification.SpecificationName,
+                    SpecificationDescritpion = NewProdectspecification.SpecificationDescritpion
+
+                };
+                productSpecificationRepo.Insert(NewProdectspecificationItem);
+
+            }
+
+
+            unitOfWork.Commit();
+        }
+
+
         public void UpdateProduct(ProductPayloadDTO entity)
         {
 
             Product product = _mapper.Map<Product>(entity);
-
-
-
-
             productRepo.Update(product);
             var oldImages = documentItemRepo.GetAll().Where(x => x.RefereneceNumber == entity.Id && (int)x.DocumentType == (int)DocumentItemType.ProductImage);
             foreach (var image in oldImages)
@@ -174,8 +228,9 @@ namespace Business.Implementation.Product_Business
 
             foreach (var item in entity.Images)
             {
-                var documrntGuid = new Guid();
-                if (SaveImage(item, documrntGuid.ToString()) {
+                var documrntGuid = Guid.NewGuid(); ;
+                if (SaveImage(item, documrntGuid.ToString()))
+                {
                     var doc = new DocumentItem
                     {
                         DocuemntName = documrntGuid.ToString(),
@@ -187,7 +242,25 @@ namespace Business.Implementation.Product_Business
                 }
             }
 
+            var oldspecifications = productSpecificationRepo.GetAll().Where(x => x.ProductNo == entity.Id);
+            foreach (var oldspecification in oldspecifications)
+            {
+                productSpecificationRepo.Delete(oldspecification.Id);
+            }
 
+            foreach (var NewProdectspecification in entity.ProductSpecifications)
+            {
+                var NewProdectspecificationItem = new ProductSpecification
+                {
+
+                    ProductNo = entity.Id,
+                    SpecificationName = NewProdectspecification.SpecificationName,
+                    SpecificationDescritpion = NewProdectspecification.SpecificationDescritpion
+
+                };
+                productSpecificationRepo.Insert(NewProdectspecificationItem);
+
+            }
 
 
             unitOfWork.Commit();
@@ -224,7 +297,7 @@ namespace Business.Implementation.Product_Business
             //set the image path
             string imgPath = Path.Combine(path, imageName);
 
-            byte[] imageBytes = Convert.FromBase64String(ImgStr);
+            byte[] imageBytes = Convert.FromBase64String(ImgStr.Split("base64,")[1]);
 
             File.WriteAllBytes(imgPath, imageBytes);
 

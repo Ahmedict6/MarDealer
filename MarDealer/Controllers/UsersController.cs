@@ -4,6 +4,7 @@ using DTOs.Common_DTOs;
 using DTOs.Product_DTOs;
 using DTOs.Shopping_DTOs;
 using DTOs.User_DTOs;
+using Entities.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,7 +24,7 @@ namespace MarDealer.Controllers
             this._userBusiness = productBusiness;
         }
 
-        [HttpGet("/GetUserTypes")]
+        [HttpGet("GetUserTypes")]
         public async Task<ApiResponse<List<LookupDTO>>> GetUserTypes()
         {
             ApiResponse<List<LookupDTO>> _ApiResponse = new ApiResponse<List<LookupDTO>>();
@@ -109,7 +110,7 @@ namespace MarDealer.Controllers
         }
 
 
-        [HttpPost("/GetUsers")]
+        [HttpPost("GetUsers")]
         public Task<ApiResponse<List<UserListDTO>>> GetUsers(Descriptor descriptor)
         {
             ApiResponse<List<UserListDTO>> response = new ApiResponse<List<UserListDTO>>();
@@ -118,18 +119,18 @@ namespace MarDealer.Controllers
             return Task.FromResult(response);
         }
 
-        [HttpPost("/Login")]
-        public async Task<ApiResponse<string>> Login(LoginDTO User)
+        [HttpPost("Login")]
+        public async Task<ApiResponse<LoginSuccessfullyDTO>> Login(LoginDTO User)
         {
-            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
-            _userBusiness.Login(User);
+            ApiResponse<LoginSuccessfullyDTO> _ApiResponse = new ApiResponse<LoginSuccessfullyDTO>();
+          var LoginUser =   _userBusiness.Login(User);
 
-            _ApiResponse.Data = " login Successfully ";
+            _ApiResponse.Data = LoginUser;
             _ApiResponse.Message = "login Successfully ";
             return _ApiResponse;
         }
 
-        [HttpPost("/ForgetPassword")]
+        [HttpPost("ForgetPassword")]
         public async Task<ApiResponse<string>> ForgetPassword(ForgetPasswordDTO User)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();
@@ -140,7 +141,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-        [HttpPost("/ChangePassword")]
+        [HttpPost("ChangePassword")]
         public async Task<ApiResponse<string>> ChangePassword(ChangePasswordDTO User)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();
@@ -150,6 +151,32 @@ namespace MarDealer.Controllers
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;
         }
+
+
+        [HttpPost("AddUsersComment")]
+        public async Task<ApiResponse<string>> AddUsersComment(UsersCommentDTO usersComment)
+        {
+            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
+            _userBusiness.AddUsersComment(usersComment);
+
+            _ApiResponse.Data = "comment/Review added Successfully ";
+            _ApiResponse.Message = "added Successfully ";
+            return _ApiResponse;
+        }
+
+
+         [HttpPost("SendOTP")]
+        public async Task<ApiResponse<string>> SendUserOTP(LoginDTO login)
+        {
+            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
+            _userBusiness.sendUserOTP(login);
+
+            _ApiResponse.Data = "";
+            _ApiResponse.Message = "Send OTP Successfully ";
+            return _ApiResponse;
+        }
+
+
 
     }
 }

@@ -5,6 +5,7 @@ using DTOs.Common_DTOs;
 using DTOs.Shopping_DTOs;
 using DTOs.User_DTOs;
 using Entities.Models.Common;
+using Entities.Models.Product_Management;
 using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
 using Repository.Interfaces;
@@ -21,6 +22,8 @@ namespace Business.Implementation.Shopping
         private IGenericRepository<OrderPayment> paymentRepo;
         private IGenericRepository<ExporterInformation> exporterRepo;
         private IGenericRepository<User> usersRepo;
+        private IGenericRepository<UsersComment> UsersCommentRepo;
+        private IGenericRepository<Product> ProductRepo;
         private IMapper _mapper;
 
         public UserBusiness(IUnitOfWork _unitOfWork,
@@ -30,7 +33,9 @@ namespace Business.Implementation.Shopping
              IGenericRepository<ExporterInformation> _exporterRepo,
              IGenericRepository<User> _usersRepo,
              IGenericRepository<LookupData> _lookupRepo,
-             IMapper mapper)
+             IMapper mapper,
+             IGenericRepository<UsersComment> _usersCommentRepo,
+             IGenericRepository<Product> _productRepo)
         {
 
             unitOfWork = _unitOfWork;
@@ -41,7 +46,8 @@ namespace Business.Implementation.Shopping
             this.usersRepo = _usersRepo;
             this.lookupRepo = _lookupRepo;
             _mapper = mapper;
-
+            UsersCommentRepo = _usersCommentRepo;
+            ProductRepo = _productRepo;
         }
 
         public void Delete(object id)
@@ -91,43 +97,11 @@ namespace Business.Implementation.Shopping
         public UserDetailsDTO GetUserDetails(int id)
         {
 
-            var order = orderRepo.GetById(id);
-            if (order == null)
+            var user = usersRepo.GetById(id);
+            if (user == null)
                 return new UserDetailsDTO();
-            var exporterInfo = exporterRepo.GetAll(q => q.UserNo == order.UserNo).FirstOrDefault();
-            //var orderItems = orderItemRepo.GetAll(q => q.UserNo == order.Id).ToList();
-            //var payment = paymentRepo.GetAll(q => q.UserNo == order.Id).FirstOrDefault();
-            //var paymentDTO = _mapper.Map<OrderPaymentDTO>(payment);
-            ////var mapper =
-            //var orderItemsDTO = _mapper.Map<List<UserItemDTO>>(orderItems);
-            var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.UserNo).Count();
 
-            var orderDetails = new UserDetailsDTO
-            {
-                Id = order.Id,
-                //ExporterPrice = exporterInfo.FrightPrice,
-                //ExporterName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.FullName,
-                //ExporterDeals = exporterDealsNumber,
-                //OrderAdress = "address",// order.OrderPrice,
-                //OrderAdressMobile = "646566356",// order.OrderCategoryNo,
-                //ItemTotalTotalPrice = order.Total,
-                //OrderItems = orderItemsDTO,
-                //PaymentType = order.PaymentType,
-                //UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.UserName,
-                //OrderPayment = paymentDTO,
-
-                //UserNo = order.UserNo,
-
-                //OrderCreatedDate = order.OrderCreatedDate,
-                //OrderModifiedDate = order.OrderModifiedDate,
-
-
-            };
-
-
-
-
-            return orderDetails;
+            return _mapper.Map<UserDetailsDTO>(user);
         }
 
         public void Insert(User entity)
@@ -137,16 +111,9 @@ namespace Business.Implementation.Shopping
         public void AddUser(UserPayloadDTO entity)
         {
 
-            User order = _mapper.Map<User>(entity);
-            //UserPayment payment = _mapper.Map<UserPayment>(entity);
-            //List<OrderItem> orderItems = _mapper.Map<List<OrderItem>>(entity.OrderItems);
-            //orderRepo.Insert(order);
-            //paymentRepo.Insert(payment);
-            //foreach (var item in orderItems)
-            //{
-            //    orderItemRepo.Insert(item);
-            //}
-
+            User user = _mapper.Map<User>(entity);
+            usersRepo.Insert(user);
+            unitOfWork.Commit();
         }
 
         public void UpdateUser(UserPayloadDTO entity)
@@ -214,9 +181,115 @@ namespace Business.Implementation.Shopping
             throw new NotImplementedException();
         }
 
-        public void Login(LoginDTO user)
+        public LoginSuccessfullyDTO Login(LoginDTO user)
         {
-            throw new NotImplementedException();
+            var LoginUser = usersRepo.GetAll().Where(x => x.Mobile == user.Mobile).FirstOrDefault();
+
+            if (LoginUser != null && LoginUser.Password != null && LoginUser.Password == user.Password  )
+            {
+
+
+                //Rest One Time password  to Null
+                LoginUser.Password = null;
+                usersRepo.Update(LoginUser);
+                unitOfWork.Commit();
+
+
+
+                /// Retun Api Acces token {MidleWhere JWT ??!!}
+                /// 
+
+                var LoginSuccessfully =   _mapper.Map<LoginSuccessfullyDTO>(LoginUser);
+                LoginSuccessfully.UserAccessToken = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; //jwtToken
+                return LoginSuccessfully;
+
+            }
+            else
+            {
+                //Throe new Exption ivaalid login data
+            }
+
+            return new LoginSuccessfullyDTO();
+        }
+
+        public void AddUsersComment(UsersCommentDTO CommentDTO)
+        {
+            var Comment = _mapper.Map<UsersComment>(CommentDTO);
+
+            if(Comment != null)
+            {
+
+
+                if (Comment.CommentType == CommentType.CompanyComment)
+                {
+
+                    // check user has order From this Exporter before
+                    var orderItem = orderRepo.GetAll().Where(x => x.ExporterNo  == Comment.RefranceNumber && x.UserNo == Comment.UserNo).FirstOrDefault();
+
+                    if (orderItem != null)
+                    {
+
+                        UsersCommentRepo.Insert(Comment);
+                        unitOfWork.Commit();
+
+                    }
+                    else
+                    {
+                        //  Throe new Exption "You cant add Review To This Company"
+                    }
+
+                }
+                else if (Comment.CommentType == CommentType.ProductComment)
+                {
+                    // check user has order From this Prudect before
+                   var orderItem = orderItemRepo.GetAll().Where(x => x.ProductNo ==Comment.RefranceNumber && x.Order.User.Id == Comment.UserNo).FirstOrDefault();
+
+                    if(orderItem!= null) {
+                    
+                    UsersCommentRepo.Insert(Comment);
+                    unitOfWork.Commit();
+                    
+                    }else
+                    {
+                        //  Throe new Exption "You cant add Review To This Product"
+                    }
+
+
+                }
+                else
+                {
+
+                    //  Throe new Exption "Invalid Comment Type"
+
+                }
+
+
+
+            }
+        
+        }
+
+        public void sendUserOTP(LoginDTO login)
+        {
+
+            var LoginUser = usersRepo.GetAll().Where(x => x.Mobile == login.Mobile).FirstOrDefault();
+            if (LoginUser != null )
+            {
+                String Password = new Random().Next(9999).ToString("D4");
+                LoginUser.Password = Password;
+                usersRepo.Update(LoginUser);
+                unitOfWork.Commit();
+
+            }
+            else
+            {
+
+                throw new Exception("Not Registerd");
+
+            }
+
+
+
         }
     }
 }

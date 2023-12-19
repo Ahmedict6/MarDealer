@@ -1,6 +1,4 @@
-﻿using Entities.Models.Common;
-using Entities.Models.Product_Management;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;

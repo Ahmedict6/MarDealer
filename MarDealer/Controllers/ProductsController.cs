@@ -61,9 +61,9 @@ namespace MarDealer.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse<ProductDetailsDTO>> Post(Entities.Models.Product_Management.Product product)
+        public async Task<ApiResponse<ProductDetailsDTO>> Post(ProductPayloadDTO product)
         {
-            _productBussiness.Insert(product);
+            _productBussiness.InsertProduct(product);
 
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;
@@ -91,7 +91,7 @@ namespace MarDealer.Controllers
         public async Task<ApiResponse<ProductDetailsDTO>> Delete(int id = 0)
         {
 
-            if (id > 1)
+            if (id < 1)
             {
                 _ApiResponse.Message = "invalid Request";
                 Response.StatusCode = 500;
@@ -107,7 +107,7 @@ namespace MarDealer.Controllers
         }
 
 
-        [HttpPost("/GetProducts")]
+        [HttpPost("api/GetProducts")]
         public Task<ApiResponse<List<ProductListDTO>>> Getprodect(Descriptor descriptor)
         {
 
@@ -117,7 +117,7 @@ namespace MarDealer.Controllers
             return Task.FromResult(response);
         }
 
-
+    
 
     }
 }

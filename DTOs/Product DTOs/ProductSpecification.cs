@@ -14,7 +14,6 @@ namespace DTOs.Product_DTOs
         public int Id { get; set; }
 
         public int ProductNo { get; set; }
-        public  Product? Product { get; set; }
         public string? SpecificationName { get; set; }
         public string? SpecificationDescritpion { get; set; }
         public DateTime CategoryCreatedDate { get; set; }

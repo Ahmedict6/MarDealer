@@ -11,5 +11,6 @@ namespace Business.Interfaces.Product_Business
         List<ProductListDTO> GetAllProducts(Descriptor descriptor);
         ProductDetailsDTO GetProductDetails(int id);
         void UpdateProduct(ProductPayloadDTO productData);
+        void InsertProduct(ProductPayloadDTO productData);
     }
 }
