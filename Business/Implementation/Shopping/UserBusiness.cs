@@ -214,9 +214,16 @@ namespace Business.Implementation.Shopping
             throw new NotImplementedException();
         }
 
-        public void Login(LoginDTO user)
+        public UserDTO Login(LoginDTO lgoinData)
         {
-            throw new NotImplementedException();
+            var user = usersRepo.GetAll(q => q.Mobile == lgoinData.Mobile && q.Password == lgoinData.Password).FirstOrDefault();
+            if(user != null)
+            {
+                var userDto = _mapper.Map<UserDTO>(user);
+                userDto.FirstName = user.FullName.Split(" ")?[0];
+                userDto.UserType = lookupRepo.GetById(user.UserTypeNo)?.LookupValue;
+                return userDto;
+            }else { return null; }
         }
     }
 }

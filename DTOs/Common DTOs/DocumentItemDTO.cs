@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DTOs.Common_DTOs
 {
-    public record DocumentItem
+    public record DocumentItemDTO
     {
         public int Id { get; set; }
 

@@ -16,19 +16,12 @@ namespace Entities.Models.Common
 
         public string? DocuemntName { get; set; }
         public string? DocumentUrl { get; set; }
-        public DocumentItemType DocumentType { get; set; }
+        public int DocumentType { get; set; }
         public int? RefereneceNumber { get; set; }
         public DateTime DocuementCreatedDate { get; set; }
         public DateTime DocumentModifiedDate { get; set; }
 
 
 
-        public enum DocumentItemType
-        {
-            UserProfileImage,
-            ProductImage,
-
-
-        }
     }
 }

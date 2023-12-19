@@ -16,7 +16,7 @@ namespace Business.Interfaces.Shopping
         List<UserListDTO> GetAllUsers(Descriptor descriptor);
         UserDetailsDTO GetUserDetails(int id);
         List<LookupDTO> GetUserTypes();
-        void Login(LoginDTO user);
+        UserDTO Login(LoginDTO user);
         void UpdateUser(UserPayloadDTO user);
     }
 }

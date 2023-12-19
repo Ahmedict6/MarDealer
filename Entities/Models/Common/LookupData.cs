@@ -15,8 +15,8 @@ namespace Entities.Models.Common
         public string? LookupDescription { get; set; }
         public string? LookupType { get; set; }
         public bool IsActive { get; set; }
-        public DateTime PaymentTypeCreatedDate { get; set; }
-        public DateTime PaymentTypeModifiedDate { get; set; }
+        public DateTime LookupCreatedDate { get; set; }
+        public DateTime LookupModifiedDate { get; set; }
 
     }
 

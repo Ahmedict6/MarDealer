@@ -1,18 +1,15 @@
-﻿using Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using Entities.Models.Product_Management;
-using Repository;
-using Entities;
-using DTOs.Product_DTOs;
+﻿using AutoMapper;
 using Business.Coomon;
 using Business.Interfaces.Product_Business;
+using DTOs.Common_DTOs;
+using DTOs.Product_DTOs;
 using Entities.Models.Common;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Entities.Models.Product_Management;
+using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
-using AutoMapper;
-using static DTOs.Common_DTOs.DocumentItem;
+using Repository.Interfaces;
+using System.Linq.Expressions;
+using static DTOs.Common_DTOs.CommonEnums;
 
 namespace Business.Implementation.Product_Business
 {
@@ -204,5 +201,63 @@ namespace Business.Implementation.Product_Business
         {
             throw new NotImplementedException();
         }
+
+        public void AddProduct(ProductPayloadDTO entity)
+        {
+            Product product = _mapper.Map<Product>(entity);
+            OrderPayment payment = _mapper.Map<OrderPayment>(entity);
+           // List<OrderItem> orderItems = _mapper.Map<List<OrderItem>>(entity.Images);
+            productRepo.Insert(product);
+            foreach (var item in entity.Images)
+            {
+                var docId = new Guid();
+                documentItemRepo.Insert(new DocumentItem() { DocuemntName=docId.ToString(),DocumentType=(int)(CommonEnums.DocumentItemType)item.AttachmentType});
+            }
+            unitOfWork.Commit();
+        }
+
+        public List<AllCategoriesDTO> GetAllCategories()
+        {
+            var category = productCategoryRepo.GetAll();
+            var subCategory = subCategoryRepo.GetAll();
+            var subOfSub = subOfSubCategoryRepo.GetAll();
+            var categoryList = new List<AllCategoriesDTO>();
+
+          
+            foreach (var item in category)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    ParentNo = 0,
+                });
+            }
+            foreach (var item in subCategory)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    ParentNo = item.CategoryNo,
+                });
+            }
+            
+            foreach (var item in subOfSub)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    ParentNo = item.SubCategoryNo,
+                });
+            }
+
+            return categoryList;
+        }
+
     }
 }

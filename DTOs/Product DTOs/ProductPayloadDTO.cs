@@ -1,4 +1,5 @@
 ﻿
+using DTOs.Common_DTOs;
 using Entities.Models.Product_Management;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,8 @@ namespace DTOs.Product_DTOs
         public int ProductInventoryNo { get; set; }
         public int ProductDiscountNo { get; set; }
         public int UserNo { get; set; }
-        public String[] Images { get; set; }
         public string? ProductUnit { get; set; }
+        public AttachmentDTO[] Images { get; set; }
 
 
 

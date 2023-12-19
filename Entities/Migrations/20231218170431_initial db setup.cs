@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class NewServerdb : Migration
+    public partial class initialdbsetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,7 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DocuemntName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DocumentUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DocumentType = table.Column<int>(type: "int", nullable: true),
+                    DocumentType = table.Column<int>(type: "int", nullable: false),
                     RefereneceNumber = table.Column<int>(type: "int", nullable: true),
                     DocuementCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DocumentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -47,6 +47,25 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LookupData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LookupValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LookupName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LookupDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LookupType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentTypeCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentTypeModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LookupData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderPayments",
                 columns: table => new
                 {
@@ -54,7 +73,7 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderNo = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Provider = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PyamentDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PaymentCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -117,27 +136,6 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAddressInformations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNo = table.Column<int>(type: "int", nullable: false),
-                    Address1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAddressInformations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserPaymentInformations",
                 columns: table => new
                 {
@@ -157,19 +155,43 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserType",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserTypeDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserTypeCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserTypeModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserTypeNo = table.Column<int>(type: "int", nullable: false),
+                    UserInformationNo = table.Column<int>(type: "int", nullable: false),
+                    UserPaymentInformationNo = table.Column<int>(type: "int", nullable: true),
+                    UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserType", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CommentReviewStars = table.Column<int>(type: "int", nullable: false),
+                    UserNo = table.Column<int>(type: "int", nullable: false),
+                    CommentType = table.Column<int>(type: "int", nullable: false),
+                    RefranceNumber = table.Column<int>(type: "int", nullable: false),
+                    CommentCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CommentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersComments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,26 +218,101 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Exporters",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserTypeNo = table.Column<int>(type: "int", nullable: false),
-                    UserInformationNo = table.Column<int>(type: "int", nullable: false),
-                    UserPaymentInformationNo = table.Column<int>(type: "int", nullable: false),
+                    UserNo = table.Column<int>(type: "int", nullable: false),
+                    ExporterName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExportPercentage = table.Column<int>(type: "int", nullable: false),
+                    FrightPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SocialInsuracePrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FoundationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Exporters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_UserType_UserTypeNo",
-                        column: x => x.UserTypeNo,
-                        principalTable: "UserType",
+                        name: "FK_Exporters_Users_UserNo",
+                        column: x => x.UserNo,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserNo = table.Column<int>(type: "int", nullable: false),
+                    ExporterNo = table.Column<int>(type: "int", nullable: false),
+                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OrderCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_UserNo",
+                        column: x => x.UserNo,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAddressInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserNo = table.Column<int>(type: "int", nullable: false),
+                    Address1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAddressInformations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAddressInformations_Users_UserNo",
+                        column: x => x.UserNo,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserOrderAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserNo = table.Column<int>(type: "int", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOrderAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOrderAddresses_Users_UserNo",
+                        column: x => x.UserNo,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -239,35 +336,6 @@ namespace Entities.Migrations
                         name: "FK_SubOfSubCategory_SubCategory_SubCategoryNo",
                         column: x => x.SubCategoryNo,
                         principalTable: "SubCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNo = table.Column<int>(type: "int", nullable: false),
-                    PyamentNo = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_OrderPayments_PyamentNo",
-                        column: x => x.PyamentNo,
-                        principalTable: "OrderPayments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Users_UserNo",
-                        column: x => x.UserNo,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -355,6 +423,34 @@ namespace Entities.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductSpecifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductNo = table.Column<int>(type: "int", nullable: false),
+                    SpecificationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecificationDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSpecifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSpecifications_Products_ProductNo",
+                        column: x => x.ProductNo,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Exporters_UserNo",
+                table: "Exporters",
+                column: "UserNo");
+
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderNo",
                 table: "OrderItems",
@@ -364,11 +460,6 @@ namespace Entities.Migrations
                 name: "IX_OrderItems_ProductNo",
                 table: "OrderItems",
                 column: "ProductNo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_PyamentNo",
-                table: "Orders",
-                column: "PyamentNo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserNo",
@@ -401,6 +492,11 @@ namespace Entities.Migrations
                 column: "SubOfSubCategoryNo");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductSpecifications_ProductNo",
+                table: "ProductSpecifications",
+                column: "ProductNo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubCategory_CategoryNo",
                 table: "SubCategory",
                 column: "CategoryNo");
@@ -411,9 +507,14 @@ namespace Entities.Migrations
                 column: "SubCategoryNo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserTypeNo",
-                table: "Users",
-                column: "UserTypeNo");
+                name: "IX_UserAddressInformations_UserNo",
+                table: "UserAddressInformations",
+                column: "UserNo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOrderAddresses_UserNo",
+                table: "UserOrderAddresses",
+                column: "UserNo");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -425,22 +526,37 @@ namespace Entities.Migrations
                 name: "DocumentItems");
 
             migrationBuilder.DropTable(
+                name: "Exporters");
+
+            migrationBuilder.DropTable(
+                name: "LookupData");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "OrderPayments");
+
+            migrationBuilder.DropTable(
+                name: "ProductSpecifications");
 
             migrationBuilder.DropTable(
                 name: "UserAddressInformations");
 
             migrationBuilder.DropTable(
+                name: "UserOrderAddresses");
+
+            migrationBuilder.DropTable(
                 name: "UserPaymentInformations");
+
+            migrationBuilder.DropTable(
+                name: "UsersComments");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "OrderPayments");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -453,9 +569,6 @@ namespace Entities.Migrations
 
             migrationBuilder.DropTable(
                 name: "SubOfSubCategory");
-
-            migrationBuilder.DropTable(
-                name: "UserType");
 
             migrationBuilder.DropTable(
                 name: "SubCategory");

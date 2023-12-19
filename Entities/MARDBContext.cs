@@ -38,7 +38,6 @@ namespace Entities
         public DbSet<OrderPayment> OrderPayments { get; set; }
         public DbSet<AdminUser> AdminUsers { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserAddressInformation> UserAddressInformations { get; set; }
         public DbSet<UserPaymentInformation> UserPaymentInformations { get; set; }
         public DbSet<DocumentItem> DocumentItems { get; set; }
         public DbSet<UsersComment> UsersComments{ get; set; }

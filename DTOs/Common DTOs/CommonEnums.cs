@@ -30,6 +30,7 @@ namespace DTOs.Common_DTOs
         {
             UserProfileImage,
             ProductImage,
+            ProductMainImage,
 
 
         }

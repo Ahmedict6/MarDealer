@@ -30,6 +30,24 @@ namespace MarDealer.Controllers
             this._productBussiness = productBusiness;
         }
 
+        [HttpGet("/GetAllCategories")]
+        public async Task<ApiResponse<List<AllCategoriesDTO>>> GetPayments()
+        {
+            ApiResponse<List<AllCategoriesDTO>> _ApiResponse = new ApiResponse<List<AllCategoriesDTO>>();
+            var product = await Task.Run<List<AllCategoriesDTO>>(() => _productBussiness.GetAllCategories());
+            if (product == null)
+            {
+                _ApiResponse.Message = "Not Found";
+                Response.StatusCode = 404;
+                return _ApiResponse;
+            }
+
+            _ApiResponse = new ApiResponse<List<AllCategoriesDTO>>();
+            _ApiResponse.Data = product;
+
+            return _ApiResponse;
+
+        }
 
         [HttpGet("{id}")]
         public async Task<ApiResponse<ProductDetailsDTO>> Get(int id)
@@ -61,9 +79,9 @@ namespace MarDealer.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse<ProductDetailsDTO>> Post(Entities.Models.Product_Management.Product product)
+        public async Task<ApiResponse<ProductDetailsDTO>> Post(ProductPayloadDTO product)
         {
-            _productBussiness.Insert(product);
+            _productBussiness.AddProduct(product);
 
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DTOs.Common_DTOs
 {
-    public record UsersComment
+    public record UsersCommentDTO
     {
         public int Id { get; set; }
         public string? CommentText { get; set; }

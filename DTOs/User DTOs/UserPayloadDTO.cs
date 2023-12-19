@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace DTOs.User_DTOs
         public int UserTypeNo { get; set; }
         public int UserInformationNo { get; set; }
         public int? UserPaymentInformationNo { get; set; }
+        public IFormFile UserImage { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
     }
