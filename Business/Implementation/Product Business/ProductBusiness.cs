@@ -95,6 +95,9 @@ namespace Business.Implementation.Product_Business
             List<ProductListDTO> productVms = new List<ProductListDTO>();
             foreach (var Product in Products)
             {
+                var UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == Product.UserNo)?.UserName;
+                var UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage)?.FirstOrDefault()?.DocumentUrl;
+                var ProductImageUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage)?.FirstOrDefault()?.DocumentUrl;
 
 
                 ProductListDTO pvm = new ProductListDTO
@@ -104,10 +107,10 @@ namespace Business.Implementation.Product_Business
                     ProductDescritpion = Product.ProductDescritpion,
                     ProductPrice = Product.ProductPrice,
                     UserNo = Product.UserNo,
-                    UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == Product.UserNo)?.UserName,
-                    UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
+                    UserName = UserName,//usersRepo.GetAll().FirstOrDefault(q => q.Id == Product.UserNo)?.UserName,
+                    UserLogUrl = UserLogUrl,// documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
                     ProductUnit = Product.ProductUnit,
-                    ProductImageUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).FirstOrDefault().DocumentUrl,
+                    ProductImageUrl = ProductImageUrl// documentItemRepo.GetAll().Where(q => q.RefereneceNumber == Product.Id && (int)q.DocumentType == (int)DocumentItemType.ProductImage).FirstOrDefault().DocumentUrl,
 
                 };
                 productVms.Add(pvm);
@@ -171,7 +174,7 @@ namespace Business.Implementation.Product_Business
         }
 
 
-        public void InsertProduct(ProductPayloadDTO entity)
+        public void AddProduct(ProductPayloadDTO entity)
         {
             Product product = _mapper.Map<Product>(entity);
             productRepo.Insert(product);
@@ -179,12 +182,12 @@ namespace Business.Implementation.Product_Business
             foreach (var item in entity.Images)
             {
                 var documrntGuid = Guid.NewGuid(); ;
-                if (SaveImage(item, documrntGuid.ToString()))
+                if (SaveImage(item.AttachmentFile, documrntGuid.ToString()))
                 {
                     var doc = new DocumentItem
                     {
                         DocuemntName = documrntGuid.ToString(),
-                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        DocumentType = (int)CommonEnums.DocumentItemType.ProductImage,
                         RefereneceNumber = product.Id,
                         DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
                     };
@@ -226,12 +229,12 @@ namespace Business.Implementation.Product_Business
             foreach (var item in entity.Images)
             {
                 var documrntGuid = Guid.NewGuid(); ;
-                if (SaveImage(item, documrntGuid.ToString()))
+                if (SaveImage(item.AttachmentFile, documrntGuid.ToString()))
                 {
                     var doc = new DocumentItem
                     {
                         DocuemntName = documrntGuid.ToString(),
-                        DocumentType = DocumentItem.DocumentItemType.ProductImage,
+                        DocumentType = (int)item.AttachmentType,
                         RefereneceNumber = entity.Id,
                         DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
                     };
@@ -304,6 +307,53 @@ namespace Business.Implementation.Product_Business
         public void DeleteRange(object id)
         {
             throw new NotImplementedException();
+        }
+
+
+        public List<AllCategoriesDTO> GetAllCategories()
+        {
+            var category = productCategoryRepo.GetAll();
+            var subCategory = subCategoryRepo.GetAll();
+            var subOfSub = subOfSubCategoryRepo.GetAll();
+            var categoryList = new List<AllCategoriesDTO>();
+
+
+            foreach (var item in category)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    CategoryLevel = 1,
+                    ParentNo = 0,
+                });
+            }
+            foreach (var item in subCategory)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    CategoryLevel = 2,
+                    ParentNo = item.CategoryNo,
+                });
+            }
+
+            foreach (var item in subOfSub)
+            {
+                categoryList.Add(new AllCategoriesDTO()
+                {
+                    Id = item.Id,
+                    CategoryName = item.CategoryName,
+                    CategoryDescritpion = item.CategoryDescritpion,
+                    CategoryLevel=3,
+                    ParentNo = item.SubCategoryNo,
+                });
+            }
+
+            return categoryList;
         }
     }
 }

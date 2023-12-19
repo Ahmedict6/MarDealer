@@ -11,6 +11,6 @@ namespace DTOs.Common_DTOs
     {
         public int Id { get; set; }
         public CommonEnums.DocumentItemType AttachmentType { get; set; }
-        public byte AttachmentFile{ get; set; }
+        public string AttachmentFile{ get; set; }
     }
 }

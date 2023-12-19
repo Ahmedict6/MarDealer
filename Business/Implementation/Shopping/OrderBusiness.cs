@@ -179,7 +179,8 @@ namespace Business.Implementation.Shopping
         public List<ExporterDTO> GetExporters()
         {
             var exporters = exporterRepo.GetAll();
-            var users = usersRepo.GetAll(u => u.UserTypeNo == (int)CommonEnums.UserType.Exporter);
+           // var lookupValue=
+            var users = usersRepo.GetAll();
             var query = from user in users
                         join exporter in exporters on user.Id equals exporter.UserNo
                         //  where sa.LocationId == 1

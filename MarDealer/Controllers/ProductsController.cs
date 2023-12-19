@@ -31,7 +31,7 @@ namespace MarDealer.Controllers
         }
 
         [HttpGet("/GetAllCategories")]
-        public async Task<ApiResponse<List<AllCategoriesDTO>>> GetPayments()
+        public async Task<ApiResponse<List<AllCategoriesDTO>>> GetAllCategories()
         {
             ApiResponse<List<AllCategoriesDTO>> _ApiResponse = new ApiResponse<List<AllCategoriesDTO>>();
             var product = await Task.Run<List<AllCategoriesDTO>>(() => _productBussiness.GetAllCategories());
@@ -81,7 +81,7 @@ namespace MarDealer.Controllers
         [HttpPost]
         public async Task<ApiResponse<ProductDetailsDTO>> Post(ProductPayloadDTO product)
         {
-            _productBussiness.InsertProduct(product);
+            _productBussiness.AddProduct(product);
 
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;

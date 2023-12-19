@@ -18,7 +18,7 @@ namespace DTOs.Common_DTOs
 
         public enum UserType
         {
-            Exporter=1,
+            Exporter,
             Customer,
             Dealer,
             Factory

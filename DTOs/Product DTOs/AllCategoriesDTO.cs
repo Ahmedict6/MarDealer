@@ -12,6 +12,7 @@ namespace DTOs.Product_DTOs
         public int Id { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDescritpion { get; set; }
+        public int CategoryLevel { get; set; }
         public int ParentNo { get; set; }
     }
 }

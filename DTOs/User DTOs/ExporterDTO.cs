@@ -14,6 +14,7 @@ namespace DTOs.User_DTOs
         public int UserNo { get; set; }
         public string? ExporterName { get; set; }
         public int ExportPercentage { get; set; }
+        public int ExportDoneDeals { get; set; }
         public decimal FrightPrice { get; set; }
         public string? SocialInsuracePrice { get; set; }
         public string? Mobile { get; set; }

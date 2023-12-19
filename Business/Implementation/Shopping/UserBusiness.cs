@@ -182,7 +182,7 @@ namespace Business.Implementation.Shopping
         }
 
         public UserDTO Login(LoginDTO lgoinData)
-        {
+        {// validation reuired in all functions
             var user = usersRepo.GetAll(q => q.Mobile == lgoinData.Mobile && q.Password == lgoinData.Password).FirstOrDefault();
             if(user != null)
             {
@@ -191,6 +191,88 @@ namespace Business.Implementation.Shopping
                 userDto.UserType = lookupRepo.GetById(user.UserTypeNo)?.LookupValue;
                 return userDto;
             }else { return null; }
+        }
+
+        public void AddUsersComment(UsersCommentDTO CommentDTO)
+        {
+            var Comment = _mapper.Map<UsersComment>(CommentDTO);
+
+            if (Comment != null)
+            {
+
+
+                if (Comment.CommentType == CommentType.CompanyComment)
+                {
+
+                    // check user has order From this Exporter before
+                    var orderItem = orderRepo.GetAll().Where(x => x.ExporterNo == Comment.RefranceNumber && x.UserNo == Comment.UserNo).FirstOrDefault();
+
+                    if (orderItem != null)
+                    {
+
+                        UsersCommentRepo.Insert(Comment);
+                        unitOfWork.Commit();
+
+                    }
+                    else
+                    {
+                        //  Throe new Exption "You cant add Review To This Company"
+                    }
+
+                }
+                else if (Comment.CommentType == CommentType.ProductComment)
+                {
+                    // check user has order From this Prudect before
+                    var orderItem = orderItemRepo.GetAll().Where(x => x.ProductNo == Comment.RefranceNumber && x.Order.User.Id == Comment.UserNo).FirstOrDefault();
+
+                    if (orderItem != null)
+                    {
+
+                        UsersCommentRepo.Insert(Comment);
+                        unitOfWork.Commit();
+
+                    }
+                    else
+                    {
+                        //  Throe new Exption "You cant add Review To This Product"
+                    }
+
+
+                }
+                else
+                {
+
+                    //  Throe new Exption "Invalid Comment Type"
+
+                }
+
+
+
+            }
+
+        }
+
+        public void sendUserOTP(LoginDTO login)
+        {
+
+            var LoginUser = usersRepo.GetAll().Where(x => x.Mobile == login.Mobile).FirstOrDefault();
+            if (LoginUser != null)
+            {
+                String Password = new Random().Next(9999).ToString("D4");
+                LoginUser.Password = Password;
+                usersRepo.Update(LoginUser);
+                unitOfWork.Commit();
+
+            }
+            else
+            {
+
+                throw new Exception("Not Registerd");
+
+            }
+
+
+
         }
     }
 }

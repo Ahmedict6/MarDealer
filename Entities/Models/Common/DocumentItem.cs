@@ -13,15 +13,12 @@ namespace Entities.Models.Common
     {
         [Key]
         public int Id { get; set; }
-
         public string? DocuemntName { get; set; }
         public string? DocumentUrl { get; set; }
         public int DocumentType { get; set; }
         public int? RefereneceNumber { get; set; }
         public DateTime DocuementCreatedDate { get; set; }
         public DateTime DocumentModifiedDate { get; set; }
-
-
 
     }
 }
