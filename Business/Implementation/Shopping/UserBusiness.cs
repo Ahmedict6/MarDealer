@@ -245,9 +245,9 @@ namespace Business.Implementation.Shopping
             if (LoginUser != null)
             {
 
-                String Password = new Random().Next(9999).ToString("D4");
+                String OTP = new Random().Next(9999).ToString("D4");
                 
-                LoginUser.OTP= Password;
+                LoginUser.OTP= OTP;
                 usersRepo.Update(LoginUser);
 
 
@@ -260,7 +260,7 @@ namespace Business.Implementation.Shopping
                 TwilioClient.Init(accountSid, authToken);
 
                 var message = MessageResource.Create(
-                    body: String.Format(MassageText, LoginUser.UserName, Password),
+                    body: String.Format(MassageText, LoginUser.UserName, OTP),
                     from: new Twilio.Types.PhoneNumber(From),
                     to: new Twilio.Types.PhoneNumber(LoginUser.Mobile)
                 );
