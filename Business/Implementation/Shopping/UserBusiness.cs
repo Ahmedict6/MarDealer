@@ -10,6 +10,8 @@ using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
 using Repository.Interfaces;
 using System.Linq.Expressions;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Business.Implementation.Shopping
 {
@@ -24,6 +26,8 @@ namespace Business.Implementation.Shopping
         private IGenericRepository<User> usersRepo;
         private IGenericRepository<UsersComment> UsersCommentRepo;
         private IGenericRepository<Product> ProductRepo;
+        private IGenericRepository<DocumentItem> DocumentitemRepo;
+
         private IMapper _mapper;
 
         public UserBusiness(IUnitOfWork _unitOfWork,
@@ -35,7 +39,11 @@ namespace Business.Implementation.Shopping
              IGenericRepository<LookupData> _lookupRepo,
              IMapper mapper,
              IGenericRepository<UsersComment> _usersCommentRepo,
-             IGenericRepository<Product> _productRepo)
+             IGenericRepository<Product> _productRepo,
+             IGenericRepository<DocumentItem> _documentitemRepo
+
+
+             )
         {
 
             unitOfWork = _unitOfWork;
@@ -48,6 +56,7 @@ namespace Business.Implementation.Shopping
             _mapper = mapper;
             UsersCommentRepo = _usersCommentRepo;
             ProductRepo = _productRepo;
+            DocumentitemRepo = _documentitemRepo;
         }
 
         public void Delete(object id)
@@ -76,12 +85,15 @@ namespace Business.Implementation.Shopping
             foreach (var User in Users)
             {
 
+                // var UserLogUrl = DocumentitemRepo.GetAll().Where(q => q.RefereneceNumber == User.Id && (int)q.DocumentType == (int)CommonEnums.DocumentItemType.UserProfileImage).FirstOrDefault()?.DocumentUrl;
 
                 UserListDTO pvm = new UserListDTO
                 {
                     Id = User.Id,
+                    UserName = User.UserName,
                     UserCreatedDate = User.UserCreatedDate,
                     UserModifiedDate = User.UserModifiedDate,
+                    //UserLogUrl=UserLogUrl,
                     //Total = User.Total,
                     //UserNo = User.UserNo,
                     //UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == User.UserNo)?.UserName,
@@ -101,7 +113,10 @@ namespace Business.Implementation.Shopping
             if (user == null)
                 return new UserDetailsDTO();
 
-            return _mapper.Map<UserDetailsDTO>(user);
+            var UserImage = DocumentitemRepo.GetAll().Where(q => q.RefereneceNumber == id && (int)q.DocumentType == (int)CommonEnums.DocumentItemType.UserProfileImage).FirstOrDefault()?.DocumentUrl;
+            var userDetailsDTO = _mapper.Map<UserDetailsDTO>(user);
+            userDetailsDTO.UserImage = UserImage;
+            return userDetailsDTO;// _mapper.Map<UserDetailsDTO>(user);
         }
 
         public void Insert(User entity)
@@ -113,15 +128,54 @@ namespace Business.Implementation.Shopping
 
             User user = _mapper.Map<User>(entity);
             usersRepo.Insert(user);
+
+
+            var documrntGuid = Guid.NewGuid();
+
+            if (SaveImage(entity.UserImage, documrntGuid.ToString()))
+            {
+                var doc = new DocumentItem
+                {
+                    DocuemntName = documrntGuid.ToString(),
+                    DocumentType = (int)CommonEnums.DocumentItemType.UserProfileImage,
+                    RefereneceNumber = entity.Id,
+                    DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                };
+                DocumentitemRepo.Insert(doc);
+            }
+
             unitOfWork.Commit();
         }
 
         public void UpdateUser(UserPayloadDTO entity)
         {
 
-            User order = _mapper.Map<User>(entity);
+            User user = _mapper.Map<User>(entity);
 
-            usersRepo.Update(order);
+            usersRepo.Update(user);
+
+
+            var userImage = DocumentitemRepo.GetAll().Where(q => q.RefereneceNumber == entity.Id && (int)q.DocumentType == (int)CommonEnums.DocumentItemType.UserProfileImage);
+            foreach (var item in userImage)
+            {
+                DocumentitemRepo.Delete(item);
+                
+            }
+
+            var documrntGuid = Guid.NewGuid();
+
+            if (SaveImage(entity.UserImage, documrntGuid.ToString()))
+            {
+                var doc = new DocumentItem
+                {
+                    DocuemntName = documrntGuid.ToString(),
+                    DocumentType = (int)CommonEnums.DocumentItemType.UserProfileImage,
+                    RefereneceNumber = entity.Id,
+                    DocumentUrl = @"Document/" + documrntGuid.ToString() + ".jpg",
+                };
+                DocumentitemRepo.Insert(doc);
+            }
+
 
             unitOfWork.Commit();
         }
@@ -173,24 +227,59 @@ namespace Business.Implementation.Shopping
 
         public void ChangePassword(ChangePasswordDTO user)
         {
-            throw new NotImplementedException();
+            var loginUser = usersRepo.GetAll().Where(X => X.OTP == user.OTP && (X.UserName == user.UserName || X.Mobile == user.Mobile))?.FirstOrDefault();
+            if (loginUser != null)
+            {
+                loginUser.Password = user.NewPassword;
+                usersRepo.Update(loginUser);
+                unitOfWork.Commit();
+            }
+
         }
 
         public void ForgetPassword(ForgetPasswordDTO user)
         {
-            throw new NotImplementedException();
+            var LoginUser = usersRepo.GetAll().Where(X => X.UserName == user.UserName || X.Mobile == user.Mobile)?.FirstOrDefault();
+
+
+            if (LoginUser != null)
+            {
+
+                String Password = new Random().Next(9999).ToString("D4");
+                
+                LoginUser.OTP= Password;
+                usersRepo.Update(LoginUser);
+
+
+
+                string accountSid = Environment.GetEnvironmentVariable("TWILIO:TWILIO_ACCOUNT_SID");
+                string authToken = Environment.GetEnvironmentVariable("TWILIO:TWILIO_AUTH_TOKEN");
+                string From = Environment.GetEnvironmentVariable("TWILIO:TWILIO_From");
+                string MassageText  = Environment.GetEnvironmentVariable("TWILIO:changePasswordMassageText");
+
+                TwilioClient.Init(accountSid, authToken);
+
+                var message = MessageResource.Create(
+                    body: String.Format(MassageText, LoginUser.UserName, Password),
+                    from: new Twilio.Types.PhoneNumber(From),
+                    to: new Twilio.Types.PhoneNumber(LoginUser.Mobile)
+                );
+
+                unitOfWork.Commit();
+            }
         }
 
         public UserDTO Login(LoginDTO lgoinData)
         {// validation reuired in all functions
             var user = usersRepo.GetAll(q => q.Mobile == lgoinData.Mobile && q.Password == lgoinData.Password).FirstOrDefault();
-            if(user != null)
+            if (user != null)
             {
                 var userDto = _mapper.Map<UserDTO>(user);
                 userDto.FirstName = user.FullName.Split(" ")?[0];
                 userDto.UserType = lookupRepo.GetById(user.UserTypeNo)?.LookupValue;
                 return userDto;
-            }else { return null; }
+            }
+            else { return null; }
         }
 
         public void AddUsersComment(UsersCommentDTO CommentDTO)
@@ -274,5 +363,29 @@ namespace Business.Implementation.Shopping
 
 
         }
+
+        public bool SaveImage(string ImgStr, string ImgName)
+        {
+            String path = Path.GetFullPath("wwwroot/Document");//Path
+
+            //Check if directory exist
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path); //Create directory if it doesn't exist
+            }
+
+            string imageName = ImgName + ".jpg";
+
+            //set the image path
+            string imgPath = Path.Combine(path, imageName);
+
+            byte[] imageBytes = Convert.FromBase64String(ImgStr.Split("base64,")[1]);
+
+            File.WriteAllBytes(imgPath, imageBytes);
+
+            return true;
+        }
+
+
     }
 }

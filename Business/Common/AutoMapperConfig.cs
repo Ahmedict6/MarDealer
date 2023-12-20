@@ -23,12 +23,14 @@ namespace Business.Common
         {
             // CreateMap<Product, ProductPayloadDTO>();
             CreateMap<ProductPayloadDTO, Product>();
+            CreateMap<UserPayloadDTO, User>();
             CreateMap<UsersCommentDTO, UsersComment>();
             CreateMap<ProductSpecification, ProductSpecificationDTO>();
             CreateMap<OrderItem, OrderItemDTO>();
             CreateMap<OrderPayment, OrderPaymentDTO>();
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
+            CreateMap<User, UserDetailsDTO>();
         }
     }
 }

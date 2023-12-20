@@ -20,7 +20,9 @@ namespace Entities.Models.User_Management
         public int UserTypeNo { get; set; }
         public string? CountryCode { get; set; }
         public string? Country { get; set; }
+        public string? OTP { get; set; }
         public string? City { get; set; }
+        public string? Email { get; set; }
         public string? Address1 { get; set; }
         public string? Address2 { get; set; }
         public string? Telephone { get; set; }

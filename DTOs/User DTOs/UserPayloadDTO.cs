@@ -15,10 +15,11 @@ namespace DTOs.User_DTOs
         public string? Password { get; set; }
         public string? Mobile { get; set; }
         public string? FullName { get; set; }
+        public string? Email { get; set; }
         public int UserTypeNo { get; set; }
         public int UserInformationNo { get; set; }
         public int? UserPaymentInformationNo { get; set; }
-        public IFormFile UserImage { get; set; }
+        public String UserImage { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
     }

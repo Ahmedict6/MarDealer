@@ -39,7 +39,7 @@ namespace MarDealer.Controllers
         }
 
        // [Authorize]
-        [HttpGet("/GetUserTypes")]
+        [HttpGet("GetUserTypes")]
         public async Task<ApiResponse<List<LookupDTO>>> GetUserTypes()
         {
             ApiResponse<List<LookupDTO>> _ApiResponse = new ApiResponse<List<LookupDTO>>();
@@ -84,10 +84,10 @@ namespace MarDealer.Controllers
 
        // [Authorize]
         [HttpPost]
-        public async Task<ApiResponse<UserDetailsDTO>> Post(IFormFile? file,UserPayloadDTO User)
+        public async Task<ApiResponse<UserDetailsDTO>> Post(UserPayloadDTO User)
         {
-            if (Request.Form.Files != null && Request.Form.Files.Count == 1)
-            { }
+            //if (Request.Form.Files != null && Request.Form.Files.Count == 1)
+            //{ }
                 ApiResponse<UserDetailsDTO> _ApiResponse = new ApiResponse<UserDetailsDTO>();
             _userBusiness.AddUser(User);
 
@@ -117,7 +117,7 @@ namespace MarDealer.Controllers
         public async Task<ApiResponse<UserDetailsDTO>> Delete(int id = 0)
         {
             ApiResponse<UserDetailsDTO> _ApiResponse = new ApiResponse<UserDetailsDTO>();
-            if (id > 1)
+            if (id < 1)
             {
                 _ApiResponse.Message = "invalid Request";
                 Response.StatusCode = 500;
@@ -131,7 +131,7 @@ namespace MarDealer.Controllers
         }
 
        // [Authorize]
-        [HttpPost("/GetUsers")]
+        [HttpPost("GetUsers")]
         public Task<ApiResponse<List<UserListDTO>>> GetUsers(Descriptor descriptor)
         {
             ApiResponse<List<UserListDTO>> response = new ApiResponse<List<UserListDTO>>();
@@ -140,7 +140,7 @@ namespace MarDealer.Controllers
             return Task.FromResult(response);
         }
 
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public async Task<ApiResponse<UserDTO>> Login(LoginDTO User)
         {
             ApiResponse<UserDTO> _ApiResponse = new ApiResponse<UserDTO>();
