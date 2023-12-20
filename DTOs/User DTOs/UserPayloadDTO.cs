@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DTOs.Common_DTOs;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,12 +16,18 @@ namespace DTOs.User_DTOs
         public string? Password { get; set; }
         public string? Mobile { get; set; }
         public string? FullName { get; set; }
-        public string? Email { get; set; }
         public int UserTypeNo { get; set; }
-        public int UserInformationNo { get; set; }
+        public string? CountryCode { get; set; }
+        public string? Country { get; set; }
+        public string? City { get; set; }
+        public string? Email { get; set; }
+        public string? Address1 { get; set; }
+        public string? Address2 { get; set; }
+        public string? Telephone { get; set; }
         public int? UserPaymentInformationNo { get; set; }
         public String UserImage { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
+        public List<AttachmentDTO> Attachments { get; set; }
     }
 }

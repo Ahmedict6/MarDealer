@@ -16,7 +16,7 @@ namespace Entities.Models.Product_Management
         public string? CategoryDescritpion { get; set; }
         public int SubCategoryNo { get; set; }
         [ForeignKey("SubCategoryNo")]
-        public virtual SubCategory? SubCategory { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
         public DateTime CategoryCreatedDate { get; set; }
         public DateTime CategoryModifiedDate { get; set; }
 

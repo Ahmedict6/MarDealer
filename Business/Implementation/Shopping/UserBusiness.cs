@@ -93,11 +93,11 @@ namespace Business.Implementation.Shopping
                     UserName = User.UserName,
                     UserCreatedDate = User.UserCreatedDate,
                     UserModifiedDate = User.UserModifiedDate,
-                    //UserLogUrl=UserLogUrl,
-                    //Total = User.Total,
-                    //UserNo = User.UserNo,
+                    FullName = User.FullName,
+                    Mobile = User.Mobile,
+                    UserTypeNo = User.UserTypeNo,
                     //UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == User.UserNo)?.UserName,
-                    //UserLogUrl = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == User.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
+                    // = documentItemRepo.GetAll().Where(q => q.RefereneceNumber == User.UserNo && (int)q.DocumentType == (int)DocumentItemType.UserProfileImage).FirstOrDefault().DocumentUrl,
 
                 };
                 orderVms.Add(pvm);
@@ -227,7 +227,7 @@ namespace Business.Implementation.Shopping
 
         public void ChangePassword(ChangePasswordDTO user)
         {
-            var loginUser = usersRepo.GetAll().Where(X => X.OTP == user.OTP && (X.UserName == user.UserName || X.Mobile == user.Mobile))?.FirstOrDefault();
+            var loginUser = usersRepo.GetAll().Where(X => X.OTP == user.OTP &&  X.Mobile == user.Mobile)?.FirstOrDefault();
             if (loginUser != null)
             {
                 loginUser.Password = user.NewPassword;
@@ -239,7 +239,7 @@ namespace Business.Implementation.Shopping
 
         public void ForgetPassword(ForgetPasswordDTO user)
         {
-            var LoginUser = usersRepo.GetAll().Where(X => X.UserName == user.UserName || X.Mobile == user.Mobile)?.FirstOrDefault();
+            var LoginUser = usersRepo.GetAll().Where(X => X.Mobile == user.Mobile)?.FirstOrDefault();
 
 
             if (LoginUser != null)
