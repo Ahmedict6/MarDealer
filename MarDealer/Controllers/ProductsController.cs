@@ -30,7 +30,7 @@ namespace MarDealer.Controllers
             this._productBussiness = productBusiness;
         }
 
-        [HttpGet("/GetAllCategories")]
+        [HttpGet("GetAllCategories")]
         public async Task<ApiResponse<List<AllCategoriesDTO>>> GetAllCategories()
         {
             ApiResponse<List<AllCategoriesDTO>> _ApiResponse = new ApiResponse<List<AllCategoriesDTO>>();
