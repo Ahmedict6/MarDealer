@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace Entities.Models.Product_Management
         public int Id { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDescritpion { get; set; }
+        public string? CategoryNameAr { get; set; }
+        public string? CategoryDescritpionAr { get; set; }
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
         public int CategoryNo { get; set; }
         [ForeignKey("CategoryNo")]
         public virtual ProductCategory? ProductCategory { get; set; }

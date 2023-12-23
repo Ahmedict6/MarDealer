@@ -2,6 +2,7 @@
 using Entities.Models.User_Management;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,10 +18,23 @@ namespace Entities.Models.Shopping_Management
         public int UserNo { get; set; }
         [ForeignKey("UserNo")]
         public virtual User User { get; set; }
+        public int OrderPaymentNo { get; set; }
+        [ForeignKey("OrderPaymentNo")]
+        public virtual OrderPayment OrderPayment { get; set; }
         public int ExporterNo { get; set; }
-        public string? PaymentType { get; set; }
+        public int PaymentTypeNo { get; set; }
+        public int OrderStatusNo { get; set; }
         public decimal Total { get; set; }
+        public decimal TotalDiscount { get; set; }
+        public string? ReceiverName { get; set; }
+        public string? Address { get; set; }
+        public string? Mobile { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? Expiry { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
         public DateTime OrderCreatedDate { get; set; }
         public DateTime OrderModifiedDate { get; set; }
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
     }
 }

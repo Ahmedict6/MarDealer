@@ -16,6 +16,7 @@ namespace Entities.Models.User_Management
         [ForeignKey("UserNo")]
         public virtual User User { get; set; }
         public string? Address { get; set; }
+        public string? AddressAr { get; set; }
         public string? Mobile { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }

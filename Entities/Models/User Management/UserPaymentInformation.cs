@@ -15,7 +15,7 @@ namespace Entities.Models.User_Management
         public string? Provider { get; set; }
         public string? AccountNumber { get; set; }
         public string? Expiry { get; set; }
-        public int PyamentType { get; set; }
+        public string? CVV { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
     }

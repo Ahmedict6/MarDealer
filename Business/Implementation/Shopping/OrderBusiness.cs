@@ -5,10 +5,12 @@ using DTOs.Common_DTOs;
 using DTOs.Shopping_DTOs;
 using DTOs.User_DTOs;
 using Entities.Models.Common;
+using Entities.Models.Product_Management;
 using Entities.Models.Shopping_Management;
 using Entities.Models.User_Management;
 using Repository.Interfaces;
 using System.Linq.Expressions;
+using Twilio.TwiML.Voice;
 
 namespace Business.Implementation.Shopping
 {
@@ -21,6 +23,7 @@ namespace Business.Implementation.Shopping
         private IGenericRepository<OrderPayment> paymentRepo;
         private IGenericRepository<ExporterInformation> exporterRepo;
         private IGenericRepository<User> usersRepo;
+        private IGenericRepository<Product> productRepo;
         private IMapper _mapper;
 
         public OrderBusiness(IUnitOfWork _unitOfWork,
@@ -30,6 +33,7 @@ namespace Business.Implementation.Shopping
              IGenericRepository<ExporterInformation> _exporterRepo,
              IGenericRepository<User> _usersRepo,
              IGenericRepository<LookupData> _lookupRepo,
+             IGenericRepository<Product> _productRepo,
              IMapper mapper)
         {
 
@@ -40,6 +44,7 @@ namespace Business.Implementation.Shopping
             this.exporterRepo = _exporterRepo;
             this.usersRepo = _usersRepo;
             this.lookupRepo = _lookupRepo;
+            this.productRepo = _productRepo;
             _mapper = mapper;
 
         }
@@ -101,6 +106,7 @@ namespace Business.Implementation.Shopping
             //var mapper =
             var orderItemsDTO = _mapper.Map<List<OrderItemDTO>>(orderItems);
             var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.UserNo).Count();
+            var paymentType = lookupRepo.GetById(order.PaymentTypeNo)?.LookupName;
 
             var orderDetails = new OrderDetailsDTO
             {
@@ -112,7 +118,7 @@ namespace Business.Implementation.Shopping
                 OrderAdressMobile = "646566356",// order.OrderCategoryNo,
                 ItemTotalTotalPrice = order.Total,
                 OrderItems = orderItemsDTO,
-                PaymentType = order.PaymentType,
+                PaymentType = paymentType,
                 UserName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.UserName,
                 OrderPayment = paymentDTO,
 
@@ -132,21 +138,73 @@ namespace Business.Implementation.Shopping
 
         public void Insert(Order entity)
         {
-            throw new NotImplementedException();
+            orderRepo.Insert(entity);
         }
-        public void AddOrder(OrderPayloadDTO entity)
+        public OrderDetailsDTO AddOrder(OrderPayloadDTO entity)
         {
+            //mapping
+            //adding item , but we need to check dsicount availability
 
+            var orderDetails= new OrderDetailsDTO();
+            var orderItemsDetails = new List<OrderItemDTO>();
             Order order = _mapper.Map<Order>(entity);
-            OrderPayment payment = _mapper.Map<OrderPayment>(entity);
+            //OrderPayment payment = _mapper.Map<OrderPayment>(entity);
             List<OrderItem> orderItems = _mapper.Map<List<OrderItem>>(entity.OrderItems);
-            orderRepo.Insert(order);
-            paymentRepo.Insert(payment);
-            foreach (var item in orderItems)
-            {
-                orderItemRepo.Insert(item);
-            }
+            var ids = orderItems.Select(q=>q.ProductNo).ToArray<int>();
+            // this is if it's transfer paymenttype we admin needs to approve tha order
+           
+                var products = this.productRepo.GetAllWithChildren(e=>e.ProductDiscount).Where(e => ids.Contains(e.Id)).ToList();
+                //   order.sta
+                decimal total = 0;
 
+            foreach (var item in orderItems)
+            { //item.
+                var product = products.Where(e => e.Id == item.ProductNo).First();
+                total = item.Quantity * product.ProductPrice;
+                var div = (decimal.Divide(product?.ProductDiscount?.DiscountPercent??0, 100));
+                item.DiscountAmount = div * total;
+                item.DiscountDescription = product?.ProductDiscount?.DiscountDescritpion;
+                item.TotalAmount =total - item.DiscountAmount;
+                // orderItemRepo.Insert(item);
+            }
+            order.Total = orderItems.Sum(q => q.TotalAmount);
+            order.TotalDiscount = orderItems.Sum(q => q.DiscountAmount);
+            order.OrderItems = orderItems;
+
+            //foreach (var item in orderItems)
+            //{ //item.
+            //    item.OrderNo = order.Id;
+            //    orderItemRepo.Insert(item);
+            //}
+            ///payment
+            var payment = new OrderPayment();
+            payment.OrderNo = order.Id;
+            payment.PaymentCreatedDate = DateTime.Now;
+            payment.PaymentModifiedDate = DateTime.Now;
+            payment.Amount = orderItems.Sum(q => q.TotalAmount);
+            if (entity.PaymentTypeNo == 3)
+            {  // call api for online payment
+            }
+            else
+            {//pending for approval
+                payment.Status = 2;
+            }
+            order.OrderPayment = payment;
+            //orderRepo.Insert(order);
+            //unitOfWork.Commit();
+            //var orderFullDetails = this.GetOrderDetails(order.Id);
+            var orderFullDetails = _mapper.Map<OrderDetailsDTO>(order);
+            return orderFullDetails;
+        }
+
+        public OrderDetailsDTO ConfirmOrder(OrderDetailsDTO entity)
+        {
+            Order order = _mapper.Map<Order>(entity);
+            orderRepo.Insert(order);
+            unitOfWork.Commit();
+
+            OrderDetailsDTO details = _mapper.Map<OrderDetailsDTO>(order);
+            return details;
         }
 
         public void UpdateOrder(OrderPayloadDTO entity)
@@ -189,7 +247,7 @@ namespace Business.Implementation.Shopping
             var lookupList = new List<ExporterDTO>();
             foreach (var item in result)
             {
-                lookupList.Add(new ExporterDTO() { Id = item.user.Id, ExporterName = item.exporter.ExporterName, ExportPercentage = item.exporter.ExportPercentage, FrightPrice = item.exporter.FrightPrice, SocialInsuracePrice = item.exporter.SocialInsuracePrice, Mobile = item.user.Mobile });
+                lookupList.Add(new ExporterDTO() { Id = item.user.Id, ExporterName = item.user.FullName, ExportPercentage = item.exporter.ExportPercentage, FrightPrice = item.exporter.FrightPrice, SocialInsuracePrice = item.exporter.SocialInsuracePrice, Mobile = item.user.Mobile });
             }
             return lookupList;
         }
@@ -204,5 +262,6 @@ namespace Business.Implementation.Shopping
             }
             return lookupList;
         }
+
     }
 }

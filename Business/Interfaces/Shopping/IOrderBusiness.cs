@@ -10,7 +10,8 @@ namespace Business.Interfaces.Shopping
 {
     public interface IOrderBusiness : IGenericRepository<Order>
     {
-        void AddOrder(OrderPayloadDTO order);
+        OrderDetailsDTO AddOrder(OrderPayloadDTO order);
+        OrderDetailsDTO ConfirmOrder(OrderDetailsDTO order);
         List<OrderListDTO> GetAllOrders(Descriptor descriptor);
         List<ExporterDTO> GetExporters();
         OrderDetailsDTO GetOrderDetails(int id);

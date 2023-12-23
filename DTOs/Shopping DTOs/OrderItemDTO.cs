@@ -14,7 +14,8 @@ namespace DTOs.Shopping_DTOs
         public int OrderNo { get; set; }
         public int ProductNo { get; set; }
         public int Quantity { get; set; }
-        public DateTime OrderItemCreatedDate { get; set; }
-        public DateTime OrderItemModifiedDate { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public string? DiscountDescription { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

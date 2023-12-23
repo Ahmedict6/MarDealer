@@ -18,7 +18,6 @@ namespace Business.Implementation.Product_Business
         private readonly IGenericRepository<Product> productRepo;
         private readonly IUnitOfWork unitOfWork;
         private readonly IGenericRepository<SubCategory> subCategoryRepo;
-        private IGenericRepository<ProductInventory> productInventoryReop;
         private readonly IGenericRepository<DocumentItem> documentItemRepo;
         private IGenericRepository<ProductCategory> productCategoryRepo;
         private IGenericRepository<SubOfSubCategory> subOfSubCategoryRepo;
@@ -32,7 +31,6 @@ namespace Business.Implementation.Product_Business
             IGenericRepository<ProductCategory> _productCategoryRepo,
             IGenericRepository<SubOfSubCategory> _subOfSubCategoryRepo,
             IGenericRepository<DocumentItem> _documentItemRepo,
-            IGenericRepository<ProductInventory> _productInventoryReop,
             IGenericRepository<Product> _productRepo,
             IGenericRepository<ProductSpecification> _productSpecificationRepo,
              IGenericRepository<UsersComment> _usersCommentrRepo,
@@ -44,7 +42,6 @@ namespace Business.Implementation.Product_Business
             subCategoryRepo = _subCategoryRepo;
             productCategoryRepo = _productCategoryRepo;
             subOfSubCategoryRepo = _subOfSubCategoryRepo;
-            productInventoryReop = _productInventoryReop;
             documentItemRepo = _documentItemRepo;
             productRepo = _productRepo;
             this.productSpecificationRepo = _productSpecificationRepo;
@@ -125,7 +122,6 @@ namespace Business.Implementation.Product_Business
             var product = productRepo.GetAllWithChildren(
                 p => p.SubCategory,
                 p => p.ProductCategory,
-                p => p.ProductInventory,
                 p => p.ProductDiscount
                 ).FirstOrDefault(p => p.Id == id);
 
@@ -147,8 +143,6 @@ namespace Business.Implementation.Product_Business
                 SubCategory = product.SubCategory,
                 SubOfSubCategoryNo = product.SubOfSubCategoryNo,
                 SubOfSubCategory = product.SubOfSubCategory,
-                ProductInventory = product.ProductInventory,
-                ProductInventoryNo = product.ProductInventoryNo,
                 ProductDiscountNo = product.ProductDiscountNo,
                 ProductDiscount = product.ProductDiscount,
                 UserNo = product.UserNo,

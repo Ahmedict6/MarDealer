@@ -84,9 +84,18 @@ namespace MarDealer.Controllers
         public async Task<ApiResponse<OrderDetailsDTO>> Post(OrderPayloadDTO order)
         {
             ApiResponse<OrderDetailsDTO> _ApiResponse = new ApiResponse<OrderDetailsDTO>();
-            _orderBussiness.AddOrder(order);
+            _ApiResponse.Data = _orderBussiness.AddOrder(order);
 
             _ApiResponse.Message = "added Successfully ";
+            return _ApiResponse;
+        }
+        [HttpPost("/Confirm")]
+        public async Task<ApiResponse<OrderDetailsDTO>> ConfirmOrder(OrderDetailsDTO order)
+        {
+            ApiResponse<OrderDetailsDTO> _ApiResponse = new ApiResponse<OrderDetailsDTO>();
+            _orderBussiness.ConfirmOrder(order);
+
+            _ApiResponse.Message = "confirmed Successfully ";
             return _ApiResponse;
         }
 

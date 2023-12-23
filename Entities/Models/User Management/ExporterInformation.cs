@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -15,12 +16,13 @@ namespace Entities.Models.User_Management
         public int UserNo{ get; set; }
         [ForeignKey("UserNo")]
         public virtual User User { get; set; }
-        public string? ExporterName { get; set; }
         public int ExportPercentage { get; set; }
         public decimal FrightPrice { get; set; }
         public string? SocialInsuracePrice { get; set; }
         public DateTime FoundationDate { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
     }
 }

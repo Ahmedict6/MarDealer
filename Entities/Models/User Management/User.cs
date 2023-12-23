@@ -1,6 +1,7 @@
 ﻿using Entities.Models.Product_Management;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,20 +15,27 @@ namespace Entities.Models.User_Management
         [Key]
         public int Id { get; set; }
         public string? FullName { get; set; }
+        public string? FullNameAr { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? Mobile { get; set; }
         public int UserTypeNo { get; set; }
         public string? CountryCode { get; set; }
         public string? Country { get; set; }
+        public string? CountryAr { get; set; }
         public string? OTP { get; set; }
         public string? City { get; set; }
+        public string? CityAr { get; set; }
         public string? Email { get; set; }
         public string? Address1 { get; set; }
         public string? Address2 { get; set; }
+        public string? Address1Ar { get; set; }
+        public string? Address2Ar { get; set; }
         public string? Telephone { get; set; }
         public int? UserPaymentInformationNo { get; set; }
         public DateTime UserCreatedDate { get; set; }
         public DateTime UserModifiedDate { get; set; }
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
     }
 }

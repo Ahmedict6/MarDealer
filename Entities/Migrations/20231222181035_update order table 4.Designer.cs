@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231222181035_update order table 4")]
+    partial class updateordertable4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -386,9 +388,6 @@ namespace Entities.Migrations
                     b.Property<DateTime>("OrderModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderPaymentNo")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaymentTypeNo")
                         .HasColumnType("int");
 
@@ -405,8 +404,6 @@ namespace Entities.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderPaymentNo");
 
                     b.HasIndex("UserNo");
 
@@ -747,19 +744,11 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Shopping_Management.Order", b =>
                 {
-                    b.HasOne("Entities.Models.Shopping_Management.OrderPayment", "OrderPayment")
-                        .WithMany()
-                        .HasForeignKey("OrderPaymentNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Entities.Models.User_Management.User", "User")
                         .WithMany()
                         .HasForeignKey("UserNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("OrderPayment");
 
                     b.Navigation("User");
                 });
@@ -767,7 +756,7 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.Shopping_Management.OrderItem", b =>
                 {
                     b.HasOne("Entities.Models.Shopping_Management.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("OrderNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -803,11 +792,6 @@ namespace Entities.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Entities.Models.Shopping_Management.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

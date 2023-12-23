@@ -4,6 +4,7 @@ using DTOs.Common_DTOs;
 using DTOs.Product_DTOs;
 using DTOs.Shopping_DTOs;
 using DTOs.User_DTOs;
+using Entities.Models.User_Management;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -38,7 +39,7 @@ namespace MarDealer.Controllers
             //}
         }
 
-       // [Authorize]
+        // [Authorize]
         [HttpGet("GetUserTypes")]
         public async Task<ApiResponse<List<LookupDTO>>> GetUserTypes()
         {
@@ -58,7 +59,7 @@ namespace MarDealer.Controllers
 
         }
 
-       // [Authorize]
+        // [Authorize]
         [HttpGet("{id}")]
         public async Task<ApiResponse<UserDetailsDTO>> Get(int id)
         {
@@ -82,20 +83,20 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-       // [Authorize]
+         [Authorize]
         [HttpPost]
         public async Task<ApiResponse<UserDetailsDTO>> Post(UserPayloadDTO User)
         {
             //if (Request.Form.Files != null && Request.Form.Files.Count == 1)
             //{ }
-                ApiResponse<UserDetailsDTO> _ApiResponse = new ApiResponse<UserDetailsDTO>();
+            ApiResponse<UserDetailsDTO> _ApiResponse = new ApiResponse<UserDetailsDTO>();
             _userBusiness.AddUser(User);
 
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;
         }
 
-       // [Authorize]
+        // [Authorize]
         [HttpPut]
         public async Task<ApiResponse<UserDetailsDTO>> Put(UserPayloadDTO userPayload)
         {
@@ -112,7 +113,7 @@ namespace MarDealer.Controllers
 
         }
 
-       // [Authorize]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ApiResponse<UserDetailsDTO>> Delete(int id = 0)
         {
@@ -130,7 +131,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-       // [Authorize]
+        // [Authorize]
         [HttpPost("GetUsers")]
         public Task<ApiResponse<List<UserListDTO>>> GetUsers(Descriptor descriptor)
         {
@@ -144,7 +145,7 @@ namespace MarDealer.Controllers
         public async Task<ApiResponse<UserDTO>> Login(LoginDTO User)
         {
             ApiResponse<UserDTO> _ApiResponse = new ApiResponse<UserDTO>();
-           var user= _userBusiness.Login(User);
+            var user = _userBusiness.Login(User);
             if (user != null)
             {
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -152,6 +153,7 @@ namespace MarDealer.Controllers
                 var claims = new[] {
         new Claim("UserName", user.Mobile),
         new Claim("UserType", user.UserType),
+        new Claim("UserTypeNo", user.Id.ToString()),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
                 var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -170,8 +172,19 @@ namespace MarDealer.Controllers
             _ApiResponse.Message = "invalid userName and Password";
             return _ApiResponse;
         }
+        [HttpPost("LogOut")]
+        public async Task<ApiResponse<string>> LogOut(LoginDTO User)
+        {// add to blacklist and remove taken from session
+            Response.Cookies.Delete("Name");
+            ApiResponse<string> _ApiResponse = new ApiResponse<string>();
+         
+            _ApiResponse.Data = "logged out Successfully ";
+            _ApiResponse.Message = "logged out Successfully ";
+            return _ApiResponse;
 
-        [HttpPost("ForgetPassword")]
+        }
+
+            [HttpPost("ForgetPassword")]
         public async Task<ApiResponse<string>> ForgetPassword(ForgetPasswordDTO User)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();
@@ -206,7 +219,7 @@ namespace MarDealer.Controllers
         }
 
 
-         [HttpPost("SendOTP")]
+        [HttpPost("SendOTP")]
         public async Task<ApiResponse<string>> SendUserOTP(LoginDTO login)
         {
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();

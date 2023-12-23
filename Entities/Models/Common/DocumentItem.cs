@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Entities.Models.Common
 {
@@ -17,6 +18,8 @@ namespace Entities.Models.Common
         public string? DocumentUrl { get; set; }
         public int DocumentType { get; set; }
         public int? RefereneceNumber { get; set; }
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
         public DateTime DocuementCreatedDate { get; set; }
         public DateTime DocumentModifiedDate { get; set; }
 

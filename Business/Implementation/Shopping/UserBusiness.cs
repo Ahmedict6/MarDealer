@@ -132,7 +132,7 @@ namespace Business.Implementation.Shopping
 
             var documrntGuid = Guid.NewGuid();
 
-            if (SaveImage(entity.UserImage, documrntGuid.ToString()))
+            if (SaveImage(entity.Attachment.AttachmentFile, documrntGuid.ToString()))
             {
                 var doc = new DocumentItem
                 {
@@ -164,7 +164,7 @@ namespace Business.Implementation.Shopping
 
             var documrntGuid = Guid.NewGuid();
 
-            if (SaveImage(entity.UserImage, documrntGuid.ToString()))
+            if (SaveImage(entity.Attachment.AttachmentFile, documrntGuid.ToString()))
             {
                 var doc = new DocumentItem
                 {
@@ -209,7 +209,7 @@ namespace Business.Implementation.Shopping
             var lookupList = new List<ExporterDTO>();
             foreach (var item in result)
             {
-                lookupList.Add(new ExporterDTO() { Id = item.user.Id, ExporterName = item.exporter.ExporterName, ExportPercentage = item.exporter.ExportPercentage, FrightPrice = item.exporter.FrightPrice, SocialInsuracePrice = item.exporter.SocialInsuracePrice, Mobile = item.user.Mobile });
+                lookupList.Add(new ExporterDTO() { Id = item.user.Id, ExporterName = item.user.FullName, ExportPercentage = item.exporter.ExportPercentage, FrightPrice = item.exporter.FrightPrice, SocialInsuracePrice = item.exporter.SocialInsuracePrice, Mobile = item.user.Mobile });
             }
             return lookupList;
         }

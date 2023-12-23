@@ -32,7 +32,6 @@ namespace Entities
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public DbSet<ProductDiscount> ProductDiscounts { get; set; }
-        public DbSet<ProductInventory> ProductInventories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderPayment> OrderPayments { get; set; }

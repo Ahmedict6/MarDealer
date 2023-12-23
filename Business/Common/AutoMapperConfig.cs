@@ -27,7 +27,13 @@ namespace Business.Common
             CreateMap<UsersCommentDTO, UsersComment>();
             CreateMap<ProductSpecification, ProductSpecificationDTO>();
             CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<OrderItemDTO, OrderItem>();
+            CreateMap<Order, OrderPayloadDTO>();
+            CreateMap<OrderPayloadDTO, Order>();
+            CreateMap<OrderDetailsDTO, Order>();
+            CreateMap<Order, OrderDetailsDTO>();
             CreateMap<OrderPayment, OrderPaymentDTO>();
+            CreateMap<OrderPaymentDTO, OrderPayment>();
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
             CreateMap<User, UserDetailsDTO>();
