@@ -83,7 +83,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
 
-         [Authorize]
+         //[Authorize]
         [HttpPost]
         public async Task<ApiResponse<UserDetailsDTO>> Post(UserPayloadDTO User)
         {
@@ -113,7 +113,7 @@ namespace MarDealer.Controllers
 
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<ApiResponse<UserDetailsDTO>> Delete(int id = 0)
         {
@@ -173,7 +173,7 @@ namespace MarDealer.Controllers
             return _ApiResponse;
         }
         [HttpPost("LogOut")]
-        public async Task<ApiResponse<string>> LogOut(LoginDTO User)
+        public async Task<ApiResponse<string>> LogOut()
         {// add to blacklist and remove taken from session
             Response.Cookies.Delete("Name");
             ApiResponse<string> _ApiResponse = new ApiResponse<string>();

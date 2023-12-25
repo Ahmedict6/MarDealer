@@ -131,8 +131,9 @@ namespace Business.Implementation.Shopping
 
 
             var documrntGuid = Guid.NewGuid();
-
-            if (SaveImage(entity.Attachment.AttachmentFile, documrntGuid.ToString()))
+            foreach (var item in entity.Attachments)
+            {
+  if (SaveImage(item.AttachmentFile, documrntGuid.ToString()))
             {
                 var doc = new DocumentItem
                 {
@@ -143,6 +144,8 @@ namespace Business.Implementation.Shopping
                 };
                 DocumentitemRepo.Insert(doc);
             }
+            }
+          
 
             unitOfWork.Commit();
         }
@@ -163,8 +166,9 @@ namespace Business.Implementation.Shopping
             }
 
             var documrntGuid = Guid.NewGuid();
-
-            if (SaveImage(entity.Attachment.AttachmentFile, documrntGuid.ToString()))
+            foreach (var item in entity.Attachments)
+            {
+  if (SaveImage(item.AttachmentFile, documrntGuid.ToString()))
             {
                 var doc = new DocumentItem
                 {
@@ -175,6 +179,8 @@ namespace Business.Implementation.Shopping
                 };
                 DocumentitemRepo.Insert(doc);
             }
+            }
+          
 
 
             unitOfWork.Commit();

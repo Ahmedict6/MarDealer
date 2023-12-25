@@ -45,6 +45,9 @@ namespace Entities.Migrations
                     b.Property<string>("DocumentUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("RefereneceNumber")
                         .HasColumnType("int");
 
@@ -110,6 +113,9 @@ namespace Entities.Migrations
                     b.Property<int>("CommentType")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("RefranceNumber")
                         .HasColumnType("int");
 
@@ -129,6 +135,9 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ProductCategoryNo")
                         .HasColumnType("int");
 
@@ -138,10 +147,10 @@ namespace Entities.Migrations
                     b.Property<string>("ProductDescritpion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductDiscountNo")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductDescritpionAr")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductInventoryNo")
+                    b.Property<int>("ProductDiscountNo")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ProductModifiedDate")
@@ -150,10 +159,19 @@ namespace Entities.Migrations
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProductNameAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("ProductQuantityInStore")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProductUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductUnitAr")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubCategoryNo")
@@ -170,8 +188,6 @@ namespace Entities.Migrations
                     b.HasIndex("ProductCategoryNo");
 
                     b.HasIndex("ProductDiscountNo");
-
-                    b.HasIndex("ProductInventoryNo");
 
                     b.HasIndex("SubCategoryNo");
 
@@ -194,11 +210,20 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryDescritpion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CategoryDescritpionAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CategoryModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CategoryNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -220,6 +245,10 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DiscountDescritpionAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DiscountEnddDate")
                         .HasColumnType("datetime2");
 
@@ -230,11 +259,18 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DiscountNameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DiscountPercent")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DiscountStartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserNo")
                         .HasColumnType("int");
@@ -242,31 +278,6 @@ namespace Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductDiscounts");
-                });
-
-            modelBuilder.Entity("Entities.Models.Product_Management.ProductInventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("InventoryCreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InventoryDescritpion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("InventoryModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InventoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductInventories");
                 });
 
             modelBuilder.Entity("Entities.Models.Product_Management.ProductSpecification", b =>
@@ -283,13 +294,22 @@ namespace Entities.Migrations
                     b.Property<DateTime>("CategoryModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ProductNo")
                         .HasColumnType("int");
 
                     b.Property<string>("SpecificationDescritpion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SpecificationDescritpionAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SpecificationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SpecificationNameAr")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -311,14 +331,23 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryDescritpion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CategoryDescritpionAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CategoryModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CategoryNameAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CategoryNo")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -341,11 +370,20 @@ namespace Entities.Migrations
                     b.Property<string>("CategoryDescritpion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CategoryDescritpionAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CategoryModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CategoryNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SubCategoryNo")
                         .HasColumnType("int");
@@ -377,6 +415,9 @@ namespace Entities.Migrations
                     b.Property<int>("ExporterNo")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
@@ -387,6 +428,9 @@ namespace Entities.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderPaymentNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderStatusNo")
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentTypeNo")
@@ -496,13 +540,16 @@ namespace Entities.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FullNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UserCreatedDate")
@@ -530,14 +577,14 @@ namespace Entities.Migrations
                     b.Property<int>("ExportPercentage")
                         .HasColumnType("int");
 
-                    b.Property<string>("ExporterName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("FoundationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("FrightPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SocialInsuracePrice")
                         .HasColumnType("nvarchar(max)");
@@ -569,13 +616,25 @@ namespace Entities.Migrations
                     b.Property<string>("Address1")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Address1Ar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address2Ar")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CityAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryAr")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CountryCode")
@@ -586,6 +645,12 @@ namespace Entities.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
@@ -630,6 +695,9 @@ namespace Entities.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AddressAr")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
@@ -658,6 +726,9 @@ namespace Entities.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CVV")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Expiry")
@@ -694,12 +765,6 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Product_Management.ProductInventory", "ProductInventory")
-                        .WithMany()
-                        .HasForeignKey("ProductInventoryNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Entities.Models.Product_Management.SubCategory", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryNo")
@@ -715,8 +780,6 @@ namespace Entities.Migrations
                     b.Navigation("ProductCategory");
 
                     b.Navigation("ProductDiscount");
-
-                    b.Navigation("ProductInventory");
 
                     b.Navigation("SubCategory");
 

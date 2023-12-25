@@ -25,7 +25,6 @@ namespace DTOs.User_DTOs
         public string? Address2 { get; set; }
         public string? Telephone { get; set; }
         public int? UserPaymentInformationNo { get; set; }
-        public AttachmentDTO Attachment { get; set; }
         public List<AttachmentDTO> Attachments { get; set; }
     }
 }

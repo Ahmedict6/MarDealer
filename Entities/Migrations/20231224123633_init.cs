@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class initialdbsetup : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,10 +18,11 @@ namespace Entities.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,6 +39,7 @@ namespace Entities.Migrations
                     DocumentUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DocumentType = table.Column<int>(type: "int", nullable: false),
                     RefereneceNumber = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DocuementCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DocumentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -57,8 +59,8 @@ namespace Entities.Migrations
                     LookupDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LookupType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentTypeCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentTypeModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LookupCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LookupModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,9 +92,12 @@ namespace Entities.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,8 +110,11 @@ namespace Entities.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DiscountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountNameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscountDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DiscountPercent = table.Column<int>(type: "int", nullable: false),
                     UserNo = table.Column<int>(type: "int", nullable: false),
                     DiscountStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -120,19 +128,23 @@ namespace Entities.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductInventories",
+                name: "ProductSpecifications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    InventoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InventoryDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InventoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InventoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ProductNo = table.Column<int>(type: "int", nullable: false),
+                    SpecificationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecificationDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecificationNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecificationDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductInventories", x => x.Id);
+                    table.PrimaryKey("PK_ProductSpecifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,7 +157,7 @@ namespace Entities.Migrations
                     Provider = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Expiry = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PyamentType = table.Column<int>(type: "int", nullable: false),
+                    CVV = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -160,15 +172,28 @@ namespace Entities.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserTypeNo = table.Column<int>(type: "int", nullable: false),
-                    UserInformationNo = table.Column<int>(type: "int", nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OTP = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CityAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address1Ar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address2Ar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserPaymentInformationNo = table.Column<int>(type: "int", nullable: true),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,6 +211,7 @@ namespace Entities.Migrations
                     UserNo = table.Column<int>(type: "int", nullable: false),
                     CommentType = table.Column<int>(type: "int", nullable: false),
                     RefranceNumber = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CommentCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CommentModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -202,6 +228,9 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CategoryNo = table.Column<int>(type: "int", nullable: false),
                     CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -224,13 +253,13 @@ namespace Entities.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserNo = table.Column<int>(type: "int", nullable: false),
-                    ExporterName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExportPercentage = table.Column<int>(type: "int", nullable: false),
                     FrightPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SocialInsuracePrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FoundationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,44 +279,32 @@ namespace Entities.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserNo = table.Column<int>(type: "int", nullable: false),
+                    OrderPaymentNo = table.Column<int>(type: "int", nullable: false),
                     ExporterNo = table.Column<int>(type: "int", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentTypeNo = table.Column<int>(type: "int", nullable: false),
+                    OrderStatusNo = table.Column<int>(type: "int", nullable: false),
                     Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalDiscount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ReceiverName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Expiry = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    OrderModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_UserNo",
-                        column: x => x.UserNo,
-                        principalTable: "Users",
+                        name: "FK_Orders_OrderPayments_OrderPaymentNo",
+                        column: x => x.OrderPaymentNo,
+                        principalTable: "OrderPayments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserAddressInformations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserNo = table.Column<int>(type: "int", nullable: false),
-                    Address1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAddressInformations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserAddressInformations_Users_UserNo",
+                        name: "FK_Orders_Users_UserNo",
                         column: x => x.UserNo,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -302,6 +319,7 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserNo = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -325,6 +343,9 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     SubCategoryNo = table.Column<int>(type: "int", nullable: false),
                     CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -348,14 +369,18 @@ namespace Entities.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProductDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductPrice = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductNameAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductDescritpionAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ProductCategoryNo = table.Column<int>(type: "int", nullable: false),
                     SubCategoryNo = table.Column<int>(type: "int", nullable: false),
                     SubOfSubCategoryNo = table.Column<int>(type: "int", nullable: false),
-                    ProductInventoryNo = table.Column<int>(type: "int", nullable: false),
+                    ProductQuantityInStore = table.Column<int>(type: "int", nullable: false),
                     ProductDiscountNo = table.Column<int>(type: "int", nullable: false),
                     UserNo = table.Column<int>(type: "int", nullable: false),
                     ProductUnit = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductUnitAr = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ProductCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProductModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -372,12 +397,6 @@ namespace Entities.Migrations
                         name: "FK_Products_ProductDiscounts_ProductDiscountNo",
                         column: x => x.ProductDiscountNo,
                         principalTable: "ProductDiscounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductInventories_ProductInventoryNo",
-                        column: x => x.ProductInventoryNo,
-                        principalTable: "ProductInventories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -403,6 +422,9 @@ namespace Entities.Migrations
                     OrderNo = table.Column<int>(type: "int", nullable: false),
                     ProductNo = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DiscountDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderItemCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderItemModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -417,29 +439,6 @@ namespace Entities.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderItems_Products_ProductNo",
-                        column: x => x.ProductNo,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductSpecifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductNo = table.Column<int>(type: "int", nullable: false),
-                    SpecificationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SpecificationDescritpion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryCreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CategoryModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSpecifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductSpecifications_Products_ProductNo",
                         column: x => x.ProductNo,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -462,6 +461,11 @@ namespace Entities.Migrations
                 column: "ProductNo");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderPaymentNo",
+                table: "Orders",
+                column: "OrderPaymentNo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserNo",
                 table: "Orders",
                 column: "UserNo");
@@ -477,11 +481,6 @@ namespace Entities.Migrations
                 column: "ProductDiscountNo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ProductInventoryNo",
-                table: "Products",
-                column: "ProductInventoryNo");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_SubCategoryNo",
                 table: "Products",
                 column: "SubCategoryNo");
@@ -492,11 +491,6 @@ namespace Entities.Migrations
                 column: "SubOfSubCategoryNo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSpecifications_ProductNo",
-                table: "ProductSpecifications",
-                column: "ProductNo");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SubCategory_CategoryNo",
                 table: "SubCategory",
                 column: "CategoryNo");
@@ -505,11 +499,6 @@ namespace Entities.Migrations
                 name: "IX_SubOfSubCategory_SubCategoryNo",
                 table: "SubOfSubCategory",
                 column: "SubCategoryNo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAddressInformations_UserNo",
-                table: "UserAddressInformations",
-                column: "UserNo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserOrderAddresses_UserNo",
@@ -535,13 +524,7 @@ namespace Entities.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "OrderPayments");
-
-            migrationBuilder.DropTable(
                 name: "ProductSpecifications");
-
-            migrationBuilder.DropTable(
-                name: "UserAddressInformations");
 
             migrationBuilder.DropTable(
                 name: "UserOrderAddresses");
@@ -559,13 +542,13 @@ namespace Entities.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "OrderPayments");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "ProductDiscounts");
-
-            migrationBuilder.DropTable(
-                name: "ProductInventories");
 
             migrationBuilder.DropTable(
                 name: "SubOfSubCategory");
