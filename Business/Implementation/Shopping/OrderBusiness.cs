@@ -169,11 +169,15 @@ namespace Business.Implementation.Shopping
                 item.DiscountDescription = product?.ProductDiscount?.DiscountDescritpion;
                 item.TotalAmount = total - item.DiscountAmount;
                 item.ProductName = product.ProductName;
-        // orderItemRepo.Insert(item);
-    }
+                item.OrderItemCreatedDate = DateTime.Now;
+                item.OrderItemModifiedDate = DateTime.Now;
+                // orderItemRepo.Insert(item);
+            }
             order.Total = orderItems.Sum(q => q.TotalAmount);
             order.TotalDiscount = orderItems.Sum(q => q.DiscountAmount);
             order.OrderItems = orderItems;
+            order.OrderCreatedDate = DateTime.Now;
+            order.OrderModifiedDate = DateTime.Now;
 
             //foreach (var item in orderItems)
             //{ //item.
@@ -186,6 +190,8 @@ namespace Business.Implementation.Shopping
             payment.PaymentCreatedDate = DateTime.Now;
             payment.PaymentModifiedDate = DateTime.Now;
             payment.Amount = orderItems.Sum(q => q.TotalAmount);
+            payment.PaymentCreatedDate = DateTime.Now;
+            payment.PaymentModifiedDate = DateTime.Now;
             if (entity.PaymentTypeNo == 3)
             {  // call api for online payment
             }
@@ -212,6 +218,8 @@ namespace Business.Implementation.Shopping
             order.UserName = "";
             order.Total = order.OrderItems.Sum(q => q.TotalAmount);
             order.TotalDiscount = order.OrderItems.Sum(q => q.DiscountAmount);
+            order.OrderCreatedDate = DateTime.Now;
+            order.OrderModifiedDate = DateTime.Now;
             orderRepo.Insert(order);
             unitOfWork.Commit();
 
