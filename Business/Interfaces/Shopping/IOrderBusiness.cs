@@ -13,6 +13,7 @@ namespace Business.Interfaces.Shopping
         OrderDetailsDTO AddOrder(OrderPayloadDTO order);
         OrderDetailsDTO ConfirmOrder(OrderDetailsDTO order);
         List<OrderListDTO> GetAllOrders(Descriptor descriptor);
+        ExporterDTO GetExporterDetails(int exporterId);
         List<ExporterDTO> GetExporters();
         OrderDetailsDTO GetOrderDetails(int id);
         List<LookupDTO> GetPaymentTypes();

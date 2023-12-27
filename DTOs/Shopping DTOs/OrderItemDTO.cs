@@ -13,6 +13,7 @@ namespace DTOs.Shopping_DTOs
         public int Id { get; set; }
         public int OrderNo { get; set; }
         public int ProductNo { get; set; }
+        public string? ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal DiscountAmount { get; set; }
         public string? DiscountDescription { get; set; }

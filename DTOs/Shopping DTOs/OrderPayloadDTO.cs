@@ -17,9 +17,9 @@ namespace DTOs.Shopping_DTOs
         public int PaymentTypeNo { get; set; }
         public int UserNo { get; set; }
         public int ExporterNo { get; set; }
-        public string? ReceiverName { get; set; }
-        public string? Address { get; set; }
-        public string? Mobile { get; set; }
+        public string? OrderReceiverName { get; set; }
+        public string? OrderAddress { get; set; }
+        public string? OrderAddressMobile { get; set; }
         public string? AccountNumber { get; set; }
         public string? Expiry { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; }

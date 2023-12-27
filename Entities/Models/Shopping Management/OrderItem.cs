@@ -19,6 +19,7 @@ namespace Entities.Models.Shopping_Management
         public int ProductNo { get; set; }
         [ForeignKey("ProductNo")]
         public virtual Product Product{ get; set; }
+        public string? ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal DiscountAmount { get; set; }
         public string? DiscountDescription { get; set; }

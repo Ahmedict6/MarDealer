@@ -13,16 +13,18 @@ namespace DTOs.Shopping_DTOs
     {
         public int Id { get; set; }
         public int UserNo { get; set; }
-        public int ExporterNo { get; set; }
         public string? UserName { get; set; }
+        public int ExporterNo { get; set; }
         public string? PaymentType { get; set; }
+        public int? PaymentTypeNo { get; set; }
         public OrderPaymentDTO OrderPayment { get; set; }
         public decimal ItemTotalTotalPrice { get; set; }
         public string? ExporterName { get; set; }
         public decimal ExporterPrice { get; set; }
         public int ExporterDeals { get; set; }
-        public string? OrderAdress { get; set; }
-        public string? OrderAdressMobile { get; set; }
+        public string? OrderReceiverName { get; set; }
+        public string? OrderAddress { get; set; }
+        public string? OrderAddressMobile { get; set; }
         public List<OrderItemDTO> OrderItems { get; set; }
         public DateTime OrderCreatedDate { get; set; }
         public DateTime OrderModifiedDate { get; set; }

@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(MARDBContext))]
-    partial class MARDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231226141919_update orderItems table")]
+    partial class updateorderItemstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -406,25 +408,19 @@ namespace Entities.Migrations
                     b.Property<string>("AccountNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Expiry")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExporterName")
+                    b.Property<string>("Expiry")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ExporterNo")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ExporterPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OrderAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderAddressMobile")
+                    b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderCreatedDate")
@@ -436,27 +432,20 @@ namespace Entities.Migrations
                     b.Property<int>("OrderPaymentNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderReceiverName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("OrderStatusNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("PaymentType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PaymentTypeNo")
                         .HasColumnType("int");
+
+                    b.Property<string>("ReceiverName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalDiscount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserNo")
                         .HasColumnType("int");

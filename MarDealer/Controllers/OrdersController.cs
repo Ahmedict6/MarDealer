@@ -56,6 +56,20 @@ namespace MarDealer.Controllers
             response.Data = product;
             return response;
         }
+        [HttpGet("GetExporterDetails")]
+        public async Task<ApiResponse<ExporterDTO>> GetExporters(int exporterId)
+        {
+            ApiResponse<ExporterDTO> response = new ApiResponse<ExporterDTO>();
+            var exporter = await Task.Run<ExporterDTO>(() => _orderBussiness.GetExporterDetails(exporterId));
+            if (exporter == null)
+            {
+                response.Message = "Not Found";
+                Response.StatusCode = 404;
+                return response;
+            }
+            response.Data = exporter;
+            return response;
+        }
 
         [HttpGet("{id}")]
         public async Task<ApiResponse<OrderDetailsDTO>> Get(int id)
@@ -89,7 +103,7 @@ namespace MarDealer.Controllers
             _ApiResponse.Message = "added Successfully ";
             return _ApiResponse;
         }
-        [HttpPost("/Confirm")]
+        [HttpPost("/ConfirmOrder")]
         public async Task<ApiResponse<OrderDetailsDTO>> ConfirmOrder(OrderDetailsDTO order)
         {
             ApiResponse<OrderDetailsDTO> _ApiResponse = new ApiResponse<OrderDetailsDTO>();

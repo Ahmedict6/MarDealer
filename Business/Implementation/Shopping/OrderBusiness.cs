@@ -24,6 +24,7 @@ namespace Business.Implementation.Shopping
         private IGenericRepository<ExporterInformation> exporterRepo;
         private IGenericRepository<User> usersRepo;
         private IGenericRepository<Product> productRepo;
+        private IGenericRepository<UsersComment> usersCommentrRepo;
         private IMapper _mapper;
 
         public OrderBusiness(IUnitOfWork _unitOfWork,
@@ -34,6 +35,7 @@ namespace Business.Implementation.Shopping
              IGenericRepository<User> _usersRepo,
              IGenericRepository<LookupData> _lookupRepo,
              IGenericRepository<Product> _productRepo,
+             IGenericRepository<UsersComment> _usersCommentrRepo,
              IMapper mapper)
         {
 
@@ -45,6 +47,7 @@ namespace Business.Implementation.Shopping
             this.usersRepo = _usersRepo;
             this.lookupRepo = _lookupRepo;
             this.productRepo = _productRepo;
+            this.usersCommentrRepo = _usersCommentrRepo;
             _mapper = mapper;
 
         }
@@ -105,8 +108,8 @@ namespace Business.Implementation.Shopping
             var paymentDTO = _mapper.Map<OrderPaymentDTO>(payment);
             //var mapper =
             var orderItemsDTO = _mapper.Map<List<OrderItemDTO>>(orderItems);
-            var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.UserNo).Count();
-            var paymentType = lookupRepo.GetById(order.PaymentTypeNo)?.LookupName;
+            var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.ExporterNo).Count();
+            var paymentType = lookupRepo.GetById(order.OrderPaymentNo)?.LookupName;
 
             var orderDetails = new OrderDetailsDTO
             {
@@ -114,8 +117,8 @@ namespace Business.Implementation.Shopping
                 ExporterPrice = exporterInfo.FrightPrice,
                 ExporterName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.FullName,
                 ExporterDeals = exporterDealsNumber,
-                OrderAdress = "address",// order.OrderPrice,
-                OrderAdressMobile = "646566356",// order.OrderCategoryNo,
+                OrderAddress =  order.OrderAddress,
+                OrderAddressMobile =order.OrderAddressMobile,
                 ItemTotalTotalPrice = order.Total,
                 OrderItems = orderItemsDTO,
                 PaymentType = paymentType,
@@ -164,9 +167,10 @@ namespace Business.Implementation.Shopping
                 var div = (decimal.Divide(product?.ProductDiscount?.DiscountPercent??0, 100));
                 item.DiscountAmount = div * total;
                 item.DiscountDescription = product?.ProductDiscount?.DiscountDescritpion;
-                item.TotalAmount =total - item.DiscountAmount;
-                // orderItemRepo.Insert(item);
-            }
+                item.TotalAmount = total - item.DiscountAmount;
+                item.ProductName = product.ProductName;
+        // orderItemRepo.Insert(item);
+    }
             order.Total = orderItems.Sum(q => q.TotalAmount);
             order.TotalDiscount = orderItems.Sum(q => q.DiscountAmount);
             order.OrderItems = orderItems;
@@ -194,12 +198,20 @@ namespace Business.Implementation.Shopping
             //unitOfWork.Commit();
             //var orderFullDetails = this.GetOrderDetails(order.Id);
             var orderFullDetails = _mapper.Map<OrderDetailsDTO>(order);
+            orderFullDetails.ExporterName = usersRepo.GetAll().FirstOrDefault(q => q.Id == order.UserNo)?.FullName;
+            var exporterDealsNumber = orderRepo.GetAll(q => q.ExporterNo == order.ExporterNo).Count();
+            orderFullDetails.ExporterDeals = exporterDealsNumber;
+            orderFullDetails.OrderAddress = order.OrderAddress;
+            orderFullDetails.OrderAddressMobile = order.OrderAddressMobile;
             return orderFullDetails;
         }
 
         public OrderDetailsDTO ConfirmOrder(OrderDetailsDTO entity)
         {
             Order order = _mapper.Map<Order>(entity);
+            order.UserName = "";
+            order.Total = order.OrderItems.Sum(q => q.TotalAmount);
+            order.TotalDiscount = order.OrderItems.Sum(q => q.DiscountAmount);
             orderRepo.Insert(order);
             unitOfWork.Commit();
 
@@ -234,10 +246,20 @@ namespace Business.Implementation.Shopping
             throw new NotImplementedException();
         }
 
+
         public List<ExporterDTO> GetExporters()
         {
+            // var exporterType = 3;
+            //var users = usersRepo.GetAll(q=>q.UserTypeNo==exporterType);
+
+            // var exporterList = new List<ExporterDTO>();
+            // foreach (var item in users)
+            // {
+            //     exporterList.Add(new ExporterDTO() { Id = item.Id, ExporterName = item.FullName});
+            // }
             var exporters = exporterRepo.GetAll();
-           // var lookupValue=
+            // var lookupValue=
+            //var productComment = usersCommentrRepo.GetAll()?.Where(q => q.RefranceNumber == product.Id && (int)q.CommentType == (int)CommentType.ProductComment)?.ToList();
             var users = usersRepo.GetAll();
             var query = from user in users
                         join exporter in exporters on user.Id equals exporter.UserNo
@@ -250,6 +272,25 @@ namespace Business.Implementation.Shopping
                 lookupList.Add(new ExporterDTO() { Id = item.user.Id, ExporterName = item.user.FullName, ExportPercentage = item.exporter.ExportPercentage, FrightPrice = item.exporter.FrightPrice, SocialInsuracePrice = item.exporter.SocialInsuracePrice, Mobile = item.user.Mobile });
             }
             return lookupList;
+            //return exporterList;
+        }
+        public ExporterDTO GetExporterDetails(int exporterId)
+        {
+            var exporters = exporterRepo.GetAll(q=>q.UserNo==exporterId);
+            // var lookupValue=
+            var customersComments = usersCommentrRepo.GetAll()?.Where(q => q.RefranceNumber == exporterId && (int)q.CommentType == (int)CommentType.ProductComment)?.ToList();
+            var users = usersRepo.GetAll(q => q.Id == exporterId);
+            var query = from user in users
+                        join exporter in exporters on user.Id equals exporter.UserNo
+                        //  where sa.LocationId == 1
+                        select new { user, exporter };
+            var result = query.FirstOrDefault();
+
+            var exporterDTO = new ExporterDTO() { Id = result.user.Id, ExporterName = result.user.FullName, ExportPercentage = result.exporter.ExportPercentage, FrightPrice = result.exporter.FrightPrice, SocialInsuracePrice = result.exporter.SocialInsuracePrice, Mobile = result.user.Mobile };
+            
+            var comments=_mapper.Map<List<UsersCommentDTO>>(customersComments);
+            exporterDTO.PeopleComments = comments;
+            return exporterDTO;
         }
 
         public List<LookupDTO> GetPaymentTypes()

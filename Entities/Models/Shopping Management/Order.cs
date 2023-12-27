@@ -15,6 +15,7 @@ namespace Entities.Models.Shopping_Management
     {
         [Key]
         public int Id { get; set; }
+        public string UserName { get; set; }
         public int UserNo { get; set; }
         [ForeignKey("UserNo")]
         public virtual User User { get; set; }
@@ -22,13 +23,16 @@ namespace Entities.Models.Shopping_Management
         [ForeignKey("OrderPaymentNo")]
         public virtual OrderPayment OrderPayment { get; set; }
         public int ExporterNo { get; set; }
+        public string? ExporterName { get; set; }
+        public decimal ExporterPrice { get; set; }
         public int PaymentTypeNo { get; set; }
+        public string? PaymentType { get; set; }
         public int OrderStatusNo { get; set; }
         public decimal Total { get; set; }
         public decimal TotalDiscount { get; set; }
-        public string? ReceiverName { get; set; }
-        public string? Address { get; set; }
-        public string? Mobile { get; set; }
+        public string? OrderReceiverName { get; set; }
+        public string? OrderAddress { get; set; }
+        public string? OrderAddressMobile { get; set; }
         public string? AccountNumber { get; set; }
         public string? Expiry { get; set; }
         public List<OrderItem> OrderItems { get; set; }
