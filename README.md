@@ -102,7 +102,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Ahmed Khalid**
+**Ahmed Khalifa**
 - GitHub: [@Ahmedict6](https://github.com/Ahmedict6)
 
 ## 📞 Support
